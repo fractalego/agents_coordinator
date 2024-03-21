@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>PyPatches</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="static/jquery.connections.js"></script>
+    <script>
+        $(function () {
+            $("#container1").draggable({
+                drag: function () {
+                    jQuery('#container1').connections('update');
+                }
+            })
+        });
+        $(function () {
+            $("#container1").resizable({
+                resize: function () {
+                    jQuery('#container1').connections('update');
+                }
+            })
+        });
+
+        $(function () {
+            $("#container2").draggable({
+                drag: function () {
+                    jQuery('#container1').connections('update');
+                }
+            })
+        });
+        $(function () {
+            $("#container2").resizable({
+                resize: function () {
+                    jQuery('#container1').connections('update');
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+<div class="container" tabindex="-1"
+     id="container1"
+     style="width: 100px; height: 100px;"
+>
+<textarea rows="1">
+title
+</textarea>
+    <div id="container1-results" class="results">
+        results
+    </div>
+</div>
+
+
+<div class="container" tabindex="-1"
+     id="container2"
+     style="width: 100px; height: 100px;"
+>
+<textarea rows="1">
+title
+</textarea>
+    <div id="container2-results" class="results">
+        results
+    </div>
+</div>
+
+</body>
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#container1').connections({to: '#container2', 'class': 'my-connection'});
+    });
+</script>
+</html>

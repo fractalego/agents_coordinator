@@ -1,0 +1,46 @@
+.color1 {color: #2085d8;}
+.color2 {color: #20a8d8;}
+.color3 {color: #6ad9e1;}
+.color4 {color: #caefed;}
+.color5 {color: #f8efed;}
+
+.container {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #6ad9e1;
+    background-color: #f8efed;
+    font-family: Inconsolata, monospace;
+    border-radius: 5px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.container:focus {
+    outline: 2px solid #20a8d8;
+}
+
+.container .results {
+    margin-top: 10px;
+}
+
+.container textarea {
+    resize: vertical;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block; /*reset from inline*/
+    width: 100%;
+    margin: 0; /*remove defaults*/
+    padding: 4px;
+    background: #fff;
+    border-style: none;
+    border-color: Transparent;
+    border-radius: 2px;
+    overflow: auto;
+    overflow-y: auto; /*resets IE*/
+    overflow-x: hidden; /*resets IE*/
+}
+
+.my-connection {
+    border-radius: 5px;
+}
