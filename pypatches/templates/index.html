@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="static/jquery.connections.js"></script>
+    <script src="static/script.js"></script>
     <script>
         $(function () {
             $("#container1").draggable({
@@ -14,8 +15,15 @@
                     jQuery('#container1').connections('update');
                 }
             })
-        });
-        $(function () {
+            $("#container1").on('keydown', function (event) {
+                console.log(event.keyCode);
+                if (event.keyCode == 46) {
+                    $('#container1').connections('remove');
+                    this.remove();
+                    $('#container2').connections('update');
+                    $('#container2').css('border-width', '1px');
+                }
+            });
             $("#container1").resizable({
                 resize: function () {
                     jQuery('#container1').connections('update');
@@ -26,49 +34,68 @@
         $(function () {
             $("#container2").draggable({
                 drag: function () {
-                    jQuery('#container1').connections('update');
+                    jQuery('#container2').connections('update');
                 }
             })
-        });
-        $(function () {
             $("#container2").resizable({
                 resize: function () {
-                    jQuery('#container1').connections('update');
+                    jQuery('#container2').connections('update');
                 }
             })
+
+            $("#container2").on('dblclick', function (event) {
+                new_container_name = 'container' + Math.floor(Math.random() * 1000000);
+                console.log(new_container_name)
+                jQuery('body').append(
+                    `<div class="container" id="${new_container_name}" tabindex="-1" style="width: 100px; height: 100px;">\n` +
+                    `    <textarea rows="1">\n` +
+                    `title\n` +
+                    `</textarea>\n` +
+                    `    <div class="results">\n` +
+                    `        results\n` +
+                    `    </div>\n` +
+                    `</div>`
+                )
+                $(`#${new_container_name}`).draggable({
+                    drag: function () {
+                        jQuery('#container2').connections('update');
+                    }
+                })
+                $(`#${new_container_name}`).resizable({
+                    resize: function () {
+                        jQuery('#container2').connections('update');
+                    }
+                })
+                $('#container2').connections({to: `#${new_container_name}`, 'class': 'my-connection'});
+            });
         });
     </script>
 </head>
 <body>
-<div class="container" tabindex="-1"
-     id="container1"
-     style="width: 100px; height: 100px;"
->
-<textarea rows="1">
-title
-</textarea>
-    <div id="container1-results" class="results">
-        results
+    <div class="container" tabindex="-1"
+         id="container1"
+         style="width: 100px; height: 100px;"
+    >
+        <textarea rows="1">title</textarea>
+        <div id="container1-results" class="results">
+            results
+        </div>
     </div>
-</div>
-
-
-<div class="container" tabindex="-1"
-     id="container2"
-     style="width: 100px; height: 100px;"
->
-<textarea rows="1">
-title
-</textarea>
-    <div id="container2-results" class="results">
-        results
+    <div class="container" tabindex="-1"
+         id="container2"
+         style="width: 100px; height: 100px;"
+    >
+        <textarea rows="1">title</textarea>
+        <div id="container2-results" class="results">
+            results
+        </div>
     </div>
-</div>
-
 </body>
 <script>
     jQuery(document).ready(function () {
         jQuery('#container1').connections({to: '#container2', 'class': 'my-connection'});
+
+
     });
 </script>
 </html>
