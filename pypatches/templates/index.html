@@ -3,12 +3,99 @@
     <title>PyPatches</title>
     <link rel="stylesheet" type="text/css" href="static/style.css">
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="static/jquery.connections.js"></script>
     <script src="static/script.js"></script>
     <script>
+        var current_selection = null;
+        var cntrlIsPressed = false;
+        $(document).keydown(function(event){
+            if(event.which=="17")
+                cntrlIsPressed = true;
+        });
+
+        $(document).keydown(function(event){
+            if(event.which=="47")
+                $(selected_connection).connections('remove');
+        });
+
+        $(document).keyup(function(){
+            cntrlIsPressed = false;
+        });
+
+
+         $(function () {
+             $("#navigation").draggable({
+                 drag: function () {
+                     jQuery('#navigation').connections('update');
+                 }
+             });
+
+             $("#navigation #delete-button").on('click', function (event) {
+               delete_mode = True;
+
+             });
+
+             $("#navigation #new-tile-button").on('click', function (event) {
+                 var new_container_name = 'container' + Math.floor(Math.random() * 1000000);
+                 console.log(new_container_name)
+                 jQuery('body').append(
+                     `<div class="container" id="${new_container_name}" tabindex="-1" style="width: 100px; height: 100px; top=50px; left: 50px; position: absolute;">\n` +
+                     `    <textarea rows="1">\n` +
+                     `title\n` +
+                     `</textarea>\n` +
+                     `    <div class="results">\n` +
+                     `        results\n` +
+                     `    </div>\n` +
+                     `</div>`
+                 )
+                 $(`#${new_container_name}`).draggable({
+                     drag: function () {
+                         jQuery(`#${new_container_name}`).connections('update');
+                     }
+                 })
+                 $(`#${new_container_name}`).resizable({
+                     resize: function () {
+                         jQuery(`#${new_container_name}`).connections('update');
+                     }
+                 })
+                 $(`#${new_container_name}`).on('keydown', function (event) {
+                    console.log(`#${new_container_name}`)
+                    if (event.keyCode == 46) {
+                      if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                        $(`#${new_container_name}`).connections('remove');
+                        this.remove();
+                       }
+                   }
+                 });
+
+                 $(`#${new_container_name}`).on('click', function (event) {
+                     console.log(`#${new_container_name}`);
+                     if (cntrlIsPressed && current_selection != null) {
+                             var connection_name = `connection-${new_container_name}`;
+                             $(current_selection).connections({to: `#${new_container_name}`, 'class': `my-connection ${connection_name}`});
+                             $(`.${connection_name}`).attr('tabindex', '-1');
+                             $(`.${connection_name}`).on('keydown', function (event) {
+
+                                     console.log(`HERE!`);
+                                     console.log(`#${connection_name}`);
+                                     $(`#${new_container_name}`).connections('remove');
+                             });
+
+                             current_selection = null;
+                     }
+                     current_selection = `#${new_container_name}`;
+
+                 });
+            });
+         });
+
+
         $(function () {
             $("#container1").draggable({
                 drag: function () {
@@ -16,12 +103,13 @@
                 }
             })
             $("#container1").on('keydown', function (event) {
-                console.log(event.keyCode);
                 if (event.keyCode == 46) {
-                    $('#container1').connections('remove');
-                    this.remove();
-                    $('#container2').connections('update');
-                    $('#container2').css('border-width', '1px');
+                    if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                        $('#container1').connections('remove');
+                        this.remove();
+                        $('#container2').connections('update');
+                        $('#container2').css('border-width', '1px');
+                    }
                 }
             });
             $("#container1").resizable({
@@ -72,11 +160,20 @@
     </script>
 </head>
 <body>
+
+    <div class="container top-0" tabindex="-1"
+         id="navigation"
+         style="width: 100px; height: 200px; top: 50px; left: 50px;"
+    >
+        <div class="text-center" id="delete-button">Delete</div>
+        <div class="text-center" id="new-tile-button">New tile</div>
+    </div>
+
     <div class="container" tabindex="-1"
          id="container1"
          style="width: 100px; height: 100px;"
     >
-        <textarea rows="1">title</textarea>
+        <textarea id="container1-textarea" rows="1">title</textarea>
         <div id="container1-results" class="results">
             results
         </div>
@@ -90,6 +187,8 @@
             results
         </div>
     </div>
+
+
 </body>
 <script>
     jQuery(document).ready(function () {
@@ -97,5 +196,30 @@
 
 
     });
+</script>
+<script>
+    // Function to adjust textarea height based on content
+    function adjustTextareaHeight(textarea) {
+        textarea.style.height = 'auto';
+        var newHeight = textarea.scrollHeight;
+        var maxHeight = textarea.parentNode.clientHeight;
+        const padding = 50;
+        if (newHeight > maxHeight - padding) {
+            textarea.style.height = maxHeight - padding + 'px';
+            textarea.style.overflowY = 'scroll';
+        } else {
+            textarea.style.height = newHeight + 'px';
+            textarea.style.overflowY = 'hidden';
+        }
+    }
+
+    // Attach input event listener to the textarea
+    var textarea = document.getElementById('container1-textarea');
+    textarea.addEventListener('input', function() {
+        adjustTextareaHeight(this);
+    });
+
+    // Adjust textarea height initially (if there is pre-filled content)
+    adjustTextareaHeight(textarea);
 </script>
 </html>

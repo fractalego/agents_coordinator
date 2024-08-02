@@ -45,3 +45,7 @@
 .my-connection {
     border-radius: 5px;
 }
+
+.my-connection:focus {
+    border-color: black;
+}
