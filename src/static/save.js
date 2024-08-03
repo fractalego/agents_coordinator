@@ -1,17 +1,25 @@
 function refactor_connections(pageContent) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
-            var newScript = $('<script>')
-            .attr('type', 'text/javascript')
-            .text(`
+        var connection_name = connection_list_name_from_and_to[i][0];
+        var connection_from = connection_list_name_from_and_to[i][1];
+        var connection_to = connection_list_name_from_and_to[i][2];
+
+        var newScript = $('<script>')
+        .attr('type', 'text/javascript')
+        .text(`
             $(function () {
-                $('${connection_list_name_from_and_to[i][1]}').connections({
-                    to: '${connection_list_name_from_and_to[i][2]}',
-                    'class': 'my-connection ${connection_list_name_from_and_to[i][0]}'
+                $('${connection_from}').connections({
+                    to: '${connection_to}',
+                    'class': 'my-connection ${connection_name}'
+                });
+                $('.${connection_name}').attr('tabindex', '-1');
+                $('.${connection_name}').on('keydown', function (event) {
+                    $('${connection_to}').connections('remove');
                 });
             });
-            `);
-            pageContent.find('head').append(newScript);
-        }
+        `);
+        pageContent.find('head').append(newScript);
+    }
 }
 
 $(document).ready(function() {

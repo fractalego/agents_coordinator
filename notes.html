@@ -469,7 +469,7 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
-                    connection_list_name_from_and_to.push(['#${connection_name}', current_selection, '#${new_container_name}']);
+                    connection_list_name_from_and_to.push(['${connection_name}', current_selection, '#${new_container_name}']);
                     $('.${connection_name}').attr('tabindex', '-1');
                     $('.${connection_name}').on('keydown', function (event) {
                         console.log('#${connection_name}');
@@ -541,7 +541,7 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
-                    connection_list_name_from_and_to.push(['#${connection_name}', current_selection, '#${new_container_name}']);
+                    connection_list_name_from_and_to.push(['${connection_name}', current_selection, '#${new_container_name}']);
                     $('.${connection_name}').attr('tabindex', '-1');
                     $('.${connection_name}').on('keydown', function (event) {
   
@@ -561,18 +561,26 @@ $(function () {
     <script>
 function refactor_connections(pageContent) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
-            var newScript = $('<script>')
-            .attr('type', 'text/javascript')
-            .text(`
+        var connection_name = connection_list_name_from_and_to[i][0];
+        var connection_from = connection_list_name_from_and_to[i][1];
+        var connection_to = connection_list_name_from_and_to[i][2];
+
+        var newScript = $('<script>')
+        .attr('type', 'text/javascript')
+        .text(`
             $(function () {
-                $('${connection_list_name_from_and_to[i][1]}').connections({
-                    to: '${connection_list_name_from_and_to[i][2]}',
-                    'class': 'my-connection ${connection_list_name_from_and_to[i][0]}'
+                $('${connection_from}').connections({
+                    to: '${connection_to}',
+                    'class': 'my-connection ${connection_name}'
+                });
+                $('.${connection_name}').attr('tabindex', '-1');
+                $('.${connection_name}').on('keydown', function (event) {
+                    $('${connection_to}').connections('remove');
                 });
             });
-            `);
-            pageContent.find('head').append(newScript);
-        }
+        `);
+        pageContent.find('head').append(newScript);
+    }
 }
 
 $(document).ready(function() {
@@ -599,7 +607,7 @@ $(document).ready(function() {
 
     <div class="container top-0" tabindex="-1"
          id="navigation"
-         style="width: 150px; height: auto; top: 50px; left: 50px; padding-top: 20px;"
+         style="width: 150px; height: auto; top: 50px; left: 50px; padding-top: 20px; border-top-width: 10px;"
     >
         <div class="text-center menu-item" id="new-project-tile-button">New Project</div>
         <div class="text-center menu-item" id="new-task-tile-button">New Task</div>
