@@ -468,14 +468,15 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
+                    $('.${connection_name}').attr('tabindex', '-1');
+                    $('.${connection_name}').on('keydown', function (event) {
+                        console.log('#${connection_name}');
+                        $('#${new_container_name}').connections('remove');
+                    });
                     current_selection = null;
                 }
-                current_selection = '#${new_container_name}';    
-            });
-            $('.${connection_name}').attr('tabindex', '-1');
-            $('.${connection_name}').on('keydown', function (event) {
-                console.log('#${connection_name}');
-                $('#${new_container_name}').connections('remove');
+                current_selection = '#${new_container_name}';
+    
             });
         });
         `;
@@ -537,15 +538,15 @@ $(function () {
                     $(current_selection).connections({
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
-                    });                   
+                    });
+                    $('.${connection_name}').attr('tabindex', '-1');
+                    $('.${connection_name}').on('keydown', function (event) {
+  
+                        $('#${new_container_name}').connections('remove');
+                    });
                     current_selection = null;
                 }
-                current_selection = '#${new_container_name}';                
-            });
-            $('.${connection_name}').attr('tabindex', '-1');
-            $('.${connection_name}').on('keydown', function (event) {
-
-                $('#${new_container_name}').connections('remove');
+                current_selection = '#${new_container_name}';
             });
         });
         `;
@@ -555,6 +556,22 @@ $(function () {
 
 </script>
     <script>
+function serializeHTML() {
+    var pageContent = $('html').clone();
+
+    // Capture the state of dynamically created elements
+    pageContent.find('*').each(function() {
+        var el = $(this);
+        var style = el.attr('style');
+        if (style) {
+            el.data('savedStyle', style); // Save current styles for later use
+        }
+    });
+
+    return pageContent.html();
+}
+
+
 $(document).ready(function() {
     $('#save-button').click(function() {
     var pageContent = $('html').clone(); // Clone the HTML content
