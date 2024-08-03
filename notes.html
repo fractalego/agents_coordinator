@@ -446,12 +446,12 @@ $(function () {
                 drag: function () {
                     jQuery('#${new_container_name}').connections('update');
                 }
-            })
+            });
             $('#${new_container_name}').resizable({
                 resize: function () {
                     jQuery('#${new_container_name}').connections('update');
                 }
-            })
+            });
             $('#${new_container_name}').on('keydown', function (event) {
                 console.log('#${new_container_name}')
                 if (event.keyCode == 46) {
@@ -518,12 +518,12 @@ $(function () {
                 drag: function () {
                     jQuery('#${new_container_name}').connections('update');
                 }
-            })
+            });
             $('#${new_container_name}').resizable({
                 resize: function () {
                     jQuery('#${new_container_name}').connections('update');
                 }
-            })
+            });
             $('#${new_container_name}').on('keydown', function (event) {
                 console.log('#${new_container_name}')
                 if (event.keyCode == 46) {
