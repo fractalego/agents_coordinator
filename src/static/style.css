@@ -32,6 +32,8 @@
     display: block; /*reset from inline*/
     width: 100%;
     margin: 0; /*remove defaults*/
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 4px;
     background: #fff;
     border-style: none;
@@ -43,9 +45,14 @@
 }
 
 .my-connection {
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 .my-connection:focus {
     border-color: black;
+}
+
+.menu-item:hover {
+    background-color: lightgrey;
+    cursor: pointer;
 }
