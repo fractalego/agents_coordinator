@@ -350,6 +350,7 @@
     <script>
 var current_selection = null;
 var cntrlIsPressed = false;
+var connection_list_name_from_and_to = [];
 
 $(document).keydown(function (event) {
     if (event.which == "17")
@@ -468,6 +469,7 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
+                    connection_list_name_from_and_to.push(['#${connection_name}', current_selection, '#${new_container_name}']);
                     $('.${connection_name}').attr('tabindex', '-1');
                     $('.${connection_name}').on('keydown', function (event) {
                         console.log('#${connection_name}');
@@ -539,6 +541,7 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
+                    connection_list_name_from_and_to.push(['#${connection_name}', current_selection, '#${new_container_name}']);
                     $('.${connection_name}').attr('tabindex', '-1');
                     $('.${connection_name}').on('keydown', function (event) {
   
@@ -556,46 +559,38 @@ $(function () {
 
 </script>
     <script>
-function serializeHTML() {
-    var pageContent = $('html').clone();
-
-    // Capture the state of dynamically created elements
-    pageContent.find('*').each(function() {
-        var el = $(this);
-        var style = el.attr('style');
-        if (style) {
-            el.data('savedStyle', style); // Save current styles for later use
+function refactor_connections(pageContent) {
+    for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
+            var newScript = $('<script>')
+            .attr('type', 'text/javascript')
+            .text(`
+            $(function () {
+                $('${connection_list_name_from_and_to[i][1]}').connections({
+                    to: '${connection_list_name_from_and_to[i][2]}',
+                    'class': 'my-connection ${connection_list_name_from_and_to[i][0]}'
+                });
+            });
+            `);
+            pageContent.find('head').append(newScript);
         }
-    });
-
-    return pageContent.html();
 }
-
 
 $(document).ready(function() {
     $('#save-button').click(function() {
-    var pageContent = $('html').clone(); // Clone the HTML content
+        var pageContent = $('html').clone(); // Clone the HTML content
+        refactor_connections(pageContent);
+        pageContent.find('textarea').each(function() {
+            $(this).text($(this).val()); // Update textareas with their current values
+        });
+        pageContent.find('.my-connection').remove();
+        var blob = new Blob([pageContent.html()], { type: 'text/html' });
 
-    // Ensure all dynamic values are included
-    pageContent.find('textarea').each(function() {
-        $(this).text($(this).val()); // Update textareas with their current values
-    });
-
-
-
-    // You may need to include dynamically created jQuery functions
-    // This is often handled by ensuring the JavaScript code is included in the saved page
-
-    // Create a Blob with the serialized content
-    var blob = new Blob([pageContent.html()], { type: 'text/html' });
-
-    // Create a download link and trigger the download
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'savedPage.html';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'savedPage.html';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 });
 </script>

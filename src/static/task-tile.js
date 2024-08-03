@@ -51,6 +51,7 @@ $(function () {
                         to: '#${new_container_name}',
                         'class': 'my-connection ${connection_name}'
                     });
+                    connection_list_name_from_and_to.push(['#${connection_name}', current_selection, '#${new_container_name}']);
                     $('.${connection_name}').attr('tabindex', '-1');
                     $('.${connection_name}').on('keydown', function (event) {
   

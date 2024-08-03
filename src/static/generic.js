@@ -1,5 +1,6 @@
 var current_selection = null;
 var cntrlIsPressed = false;
+var connection_list_name_from_and_to = [];
 
 $(document).keydown(function (event) {
     if (event.which == "17")
