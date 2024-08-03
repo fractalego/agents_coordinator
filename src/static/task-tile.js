@@ -19,46 +19,49 @@ $(function () {
         jQuery('body').append(
             create_task_tile(new_container_name, screenCenterX, screenCenterY)
         )
-        $(`#${new_container_name}`).draggable({
-            drag: function () {
-                jQuery(`#${new_container_name}`).connections('update');
-            }
-        })
-        $(`#${new_container_name}`).resizable({
-            resize: function () {
-                jQuery(`#${new_container_name}`).connections('update');
-            }
-        })
-        $(`#${new_container_name}`).on('keydown', function (event) {
-            console.log(`#${new_container_name}`)
-            if (event.keyCode == 46) {
-                if (document.activeElement.tagName.toLowerCase() != "textarea") {
-                    $(`#${new_container_name}`).connections('remove');
-                    this.remove();
+        var connection_name = `connection-${new_container_name}`;
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.text = `
+        $(function () {
+            $('#${new_container_name}').draggable({
+                drag: function () {
+                    jQuery('#${new_container_name}').connections('update');
                 }
-            }
+            })
+            $('#${new_container_name}').resizable({
+                resize: function () {
+                    jQuery('#${new_container_name}').connections('update');
+                }
+            })
+            $('#${new_container_name}').on('keydown', function (event) {
+                console.log('#${new_container_name}')
+                if (event.keyCode == 46) {
+                    if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                        $('#${new_container_name}').connections('remove');
+                        this.remove();
+                    }
+                }
+            });
+    
+            $('#${new_container_name}').on('click', function (event) {
+                console.log('#${new_container_name}');
+                if (cntrlIsPressed && current_selection != null) {
+                    $(current_selection).connections({
+                        to: '#${new_container_name}',
+                        'class': 'my-connection ${connection_name}'
+                    });
+                    $('.${connection_name}').attr('tabindex', '-1');
+                    $('.${connection_name}').on('keydown', function (event) {
+  
+                        $('#${new_container_name}').connections('remove');
+                    });
+                    current_selection = null;
+                }
+                current_selection = '#${new_container_name}';
+            });
         });
-
-        $(`#${new_container_name}`).on('click', function (event) {
-            console.log(`#${new_container_name}`);
-            if (cntrlIsPressed && current_selection != null) {
-                var connection_name = `connection-${new_container_name}`;
-                $(current_selection).connections({
-                    to: `#${new_container_name}`,
-                    'class': `my-connection ${connection_name}`
-                });
-                $(`.${connection_name}`).attr('tabindex', '-1');
-                $(`.${connection_name}`).on('keydown', function (event) {
-
-                    console.log(`HERE!`);
-                    console.log(`#${connection_name}`);
-                    $(`#${new_container_name}`).connections('remove');
-                });
-
-                current_selection = null;
-            }
-            current_selection = `#${new_container_name}`;
-
-        });
+        `;
+        document.head.appendChild(script);
     });
 });
