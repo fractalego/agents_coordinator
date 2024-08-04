@@ -27,8 +27,39 @@ $(function () {
         script.text = `
         $(function () {
             $('#${new_container_name}').draggable({
-                drag: function () {
+                start: function(event, ui) {
+                    // Only start dragging if the item is selected
+                    if (!$(this).hasClass('ui-selected')) {
+                        $(".draggable").removeClass('ui-selected');
+                        $(this).addClass('ui-selected');
+                    }
+
+                    // Save the initial position of each selected item
+                    var startPosition = ui.position;
+                    $(".ui-selected").each(function() {
+                        var $this = $(this);
+                        var itemPosition = $this.position();
+                        $this.data("startPos", itemPosition);
+                        $this.data("offset", {
+                            top: itemPosition.top - startPosition.top,
+                            left: itemPosition.left - startPosition.left
+                        });
+                    });
+                },                            
+                drag: function (event, ui) {
+                    // Move each selected item according to the initial offset
+                    $(".ui-selected").not(this).each(function() {
+                        var $this = $(this);
+                        var offset = $this.data("offset");
+                        $this.css({
+                            top: ui.position.top + offset.top,
+                            left: ui.position.left + offset.left
+                        });
+                    });   
                     jQuery('#${new_container_name}').connections('update');
+                },
+                stop: function (event, ui) {                   
+                    $(".container").removeClass("ui-selected");
                 }
             });
             $('#${new_container_name}').resizable({

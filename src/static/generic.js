@@ -2,6 +2,13 @@ var current_selection = null;
 var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
 
+$(function() {
+    // Make the entire body selectable
+    $("body").selectable({
+        filter: ".container",
+    });
+});
+
 $(document).keydown(function (event) {
     if (event.which == "17")
         cntrlIsPressed = true;

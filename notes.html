@@ -19,7 +19,9 @@
     overflow: hidden;
     position: absolute;
 }
-
+.ui-selected {
+    border-color: darkblue;
+}
 .container:focus {
     outline: 2px solid #20a8d8;
 }
@@ -61,6 +63,7 @@
     background-color: lightgrey;
     cursor: pointer;
 }
+
 </style>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -352,6 +355,13 @@ var current_selection = null;
 var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
 
+$(function() {
+    // Make the entire body selectable
+    $("body").selectable({
+        filter: ".container",
+    });
+});
+
 $(document).keydown(function (event) {
     if (event.which == "17")
         cntrlIsPressed = true;
@@ -443,8 +453,39 @@ $(function () {
         script.text = `
         $(function () {
             $('#${new_container_name}').draggable({
-                drag: function () {
+                start: function(event, ui) {
+                    // Only start dragging if the item is selected
+                    if (!$(this).hasClass('ui-selected')) {
+                        $(".draggable").removeClass('ui-selected');
+                        $(this).addClass('ui-selected');
+                    }
+
+                    // Save the initial position of each selected item
+                    var startPosition = ui.position;
+                    $(".ui-selected").each(function() {
+                        var $this = $(this);
+                        var itemPosition = $this.position();
+                        $this.data("startPos", itemPosition);
+                        $this.data("offset", {
+                            top: itemPosition.top - startPosition.top,
+                            left: itemPosition.left - startPosition.left
+                        });
+                    });
+                },                            
+                drag: function (event, ui) {
+                    // Move each selected item according to the initial offset
+                    $(".ui-selected").not(this).each(function() {
+                        var $this = $(this);
+                        var offset = $this.data("offset");
+                        $this.css({
+                            top: ui.position.top + offset.top,
+                            left: ui.position.left + offset.left
+                        });
+                    });   
                     jQuery('#${new_container_name}').connections('update');
+                },
+                stop: function (event, ui) {                   
+                    $(".container").removeClass("ui-selected");
                 }
             });
             $('#${new_container_name}').resizable({
@@ -513,10 +554,41 @@ $(function () {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.text = `
-        $(function () {
+        $(function () {            
             $('#${new_container_name}').draggable({
-                drag: function () {
+                start: function(event, ui) {
+                    // Only start dragging if the item is selected
+                    if (!$(this).hasClass('ui-selected')) {
+                        $(".draggable").removeClass('ui-selected');
+                        $(this).addClass('ui-selected');
+                    }
+
+                    // Save the initial position of each selected item
+                    var startPosition = ui.position;
+                    $(".ui-selected").each(function() {
+                        var $this = $(this);
+                        var itemPosition = $this.position();
+                        $this.data("startPos", itemPosition);
+                        $this.data("offset", {
+                            top: itemPosition.top - startPosition.top,
+                            left: itemPosition.left - startPosition.left
+                        });
+                    });
+                },                            
+                drag: function (event, ui) {
+                    // Move each selected item according to the initial offset
+                    $(".ui-selected").not(this).each(function() {
+                        var $this = $(this);
+                        var offset = $this.data("offset");
+                        $this.css({
+                            top: ui.position.top + offset.top,
+                            left: ui.position.left + offset.left
+                        });
+                    });   
                     jQuery('#${new_container_name}').connections('update');
+                },
+                stop: function (event, ui) {                   
+                    $(".container").removeClass("ui-selected");
                 }
             });
             $('#${new_container_name}').resizable({
@@ -604,7 +676,6 @@ $(document).ready(function() {
 </script>
 </head>
 <body style="height: 10000px; width: 10000px;">
-
     <div class="container top-0" tabindex="-1"
          id="navigation"
          style="width: 150px; height: auto; top: 50px; left: 50px; padding-top: 20px; border-top-width: 10px;"
@@ -613,6 +684,5 @@ $(document).ready(function() {
         <div class="text-center menu-item" id="new-task-tile-button">New Task</div>
         <div class="text-center menu-item" id="save-button">Save</div>
     </div>
-
 </body>
 </html>
