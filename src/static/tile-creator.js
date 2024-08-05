@@ -1,4 +1,4 @@
-function create_new_project_tile(event, position, html_tile_creator) {
+function create_new_tile(event, position, html_tile_creator) {
     var new_container_name = 'container' + Math.floor(Math.random() * 1000000);
     console.log(new_container_name);
     var screenCenterX = window.innerWidth / 2 + Math.random() * 10;

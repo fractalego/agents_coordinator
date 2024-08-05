@@ -416,7 +416,7 @@ $(document).ready(function () {
 
 </script>
     <script>
-function create_new_project_tile(event, position, html_tile_creator) {
+function create_new_tile(event, position, html_tile_creator) {
     var new_container_name = 'container' + Math.floor(Math.random() * 1000000);
     console.log(new_container_name);
     var screenCenterX = window.innerWidth / 2 + Math.random() * 10;
@@ -542,11 +542,11 @@ function create_project_tile(container_name, x, y) {
 
 $(function () {
     $("#navigation #new-project-tile-button").on('click', function (event) {
-        create_new_project_tile(event, position="center", html_tile_creator=create_project_tile);
+        create_new_tile(event, position="center", html_tile_creator=create_project_tile);
     });
     $(document).on('keypress',function(event) {
         if(event.which == "112") {
-            create_new_project_tile(event, position="mouse", html_tile_creator=create_project_tile);
+            create_new_tile(event, position="mouse", html_tile_creator=create_project_tile);
         }
     });
 });
@@ -567,11 +567,11 @@ function create_task_tile(container_name, x, y) {
 
 $(function () {
     $("#navigation #new-task-tile-button").on('click', function (event) {
-        create_new_project_tile(event, position="center", html_tile_creator=create_task_tile);
+        create_new_tile(event, position="center", html_tile_creator=create_task_tile);
     });
     $(document).on('keypress',function(event) {
         if(event.which == "116") {
-            create_new_project_tile(event, position="mouse", html_tile_creator=create_task_tile);
+            create_new_tile(event, position="mouse", html_tile_creator=create_task_tile);
         }
     });
 });

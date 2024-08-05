@@ -12,11 +12,11 @@ function create_task_tile(container_name, x, y) {
 
 $(function () {
     $("#navigation #new-task-tile-button").on('click', function (event) {
-        create_new_project_tile(event, position="center", html_tile_creator=create_task_tile);
+        create_new_tile(event, position="center", html_tile_creator=create_task_tile);
     });
     $(document).on('keypress',function(event) {
         if(event.which == "116") {
-            create_new_project_tile(event, position="mouse", html_tile_creator=create_task_tile);
+            create_new_tile(event, position="mouse", html_tile_creator=create_task_tile);
         }
     });
 });

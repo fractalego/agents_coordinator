@@ -14,11 +14,11 @@ function create_project_tile(container_name, x, y) {
 
 $(function () {
     $("#navigation #new-project-tile-button").on('click', function (event) {
-        create_new_project_tile(event, position="center", html_tile_creator=create_project_tile);
+        create_new_tile(event, position="center", html_tile_creator=create_project_tile);
     });
     $(document).on('keypress',function(event) {
         if(event.which == "112") {
-            create_new_project_tile(event, position="mouse", html_tile_creator=create_project_tile);
+            create_new_tile(event, position="mouse", html_tile_creator=create_project_tile);
         }
     });
 });
