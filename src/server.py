@@ -10,4 +10,4 @@ def index():
 
 if __name__ == "__main__":
     app.add_url_rule("/", "index", index, methods=["GET"])
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8099, debug=True)

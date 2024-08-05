@@ -1,6 +1,7 @@
 var current_selection = null;
 var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
+var mousex = 0, mousey = 0;
 
 $(function() {
     // Make the entire body selectable
@@ -19,13 +20,15 @@ $(document).keydown(function (event) {
         $(selected_connection).connections('remove');
 });
 
+
+
 $(document).keyup(function () {
     cntrlIsPressed = false;
 });
 
 $(document).ready(function () {
-    let isMiddleButtonPressed = false;
-    let startX, startY;
+    var isMiddleButtonPressed = false;
+    var startX, startY;
 
     $(document).mousedown(function (e) {
         if (e.which === 2) {
@@ -37,6 +40,9 @@ $(document).ready(function () {
     });
 
     $(document).mousemove(function (e) {
+        mousex = e.pageX;
+        mousey = e.pageY;
+
         if (isMiddleButtonPressed) {
             let deltaX = startX - e.pageX;
             let deltaY = startY - e.pageY;

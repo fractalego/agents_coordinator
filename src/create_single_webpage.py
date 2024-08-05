@@ -13,6 +13,7 @@ def embed_assets(html_file, static_folder, output_file):
     script_tags = [
         '<script src="static/jquery.connections.js"></script>',
         '<script src="static/generic.js"></script>',
+        '<script src="static/tile-creator.js"></script>',
         '<script src="static/navigation.js"></script>',
         '<script src="static/project-tile.js"></script>',
         '<script src="static/task-tile.js"></script>',
