@@ -17,7 +17,8 @@ $(function () {
         create_new_tile(event, position="center", html_tile_creator=create_project_tile);
     });
     $(document).on('keypress',function(event) {
-        if(event.which == "112") {
+        var tag = event.target.tagName.toLowerCase();
+        if(event.which == "112" && tag != 'input' && tag != 'textarea') {
             create_new_tile(event, position="mouse", html_tile_creator=create_project_tile);
         }
     });
