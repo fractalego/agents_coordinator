@@ -5,8 +5,4 @@ $(function () {
         }
     });
 
-    $("#navigation #delete-button").on('click', function (event) {
-        delete_mode = True;
-
-    });
 });

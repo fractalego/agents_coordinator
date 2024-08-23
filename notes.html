@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>SimpleNoteTaker</title>
+    <title>AgentsCoordinator</title>
     <style>
 .color1 {color: #2085d8;}
 .color2 {color: #20a8d8;}
@@ -519,10 +519,6 @@ $(function () {
         }
     });
 
-    $("#navigation #delete-button").on('click', function (event) {
-        delete_mode = True;
-
-    });
 });
 </script>
     <script>
@@ -623,15 +619,50 @@ $(document).ready(function() {
     });
 });
 </script>
+    <script>
+$(function () {
+    $("#start").draggable({
+        drag: function () {
+            jQuery('#start').connections('update');
+        }
+    });
+
+    $("#start").on('click', function (event) {
+        current_selection = '#start';
+    });
+});
+</script>
+    <script>
+$(function () {
+    $("#chat").draggable({
+        drag: function () {
+            jQuery('#start').connections('update');
+        }
+    });
+});
+</script>
 </head>
 <body style="height: 10000px; width: 10000px;">
     <div class="container top-0" tabindex="-1"
          id="navigation"
-         style="width: 150px; height: auto; top: 50px; left: 50px; padding-top: 20px; border-top-width: 10px;"
+         style="width: 250px; height: auto; top: 50px; left: 50px; padding-top: 20px; border-top-width: 10px;"
     >
-        <div class="text-center menu-item" id="new-project-tile-button">New Project</div>
-        <div class="text-center menu-item" id="new-task-tile-button">New Task</div>
+        <div class="text-center menu-item" id="new-project-tile-button">New Conditional prompt</div>
+        <div class="text-center menu-item" id="new-task-tile-button">New Prompt</div>
         <div class="text-center menu-item" id="save-button">Save</div>
     </div>
+    <div class="container top-0" tabindex="-1"
+         id="start"
+         style="width: 50px; height: auto; top: 50px; left: 350px; padding-top: 20px; border-top-width: 10px;"
+    >Start
+    </div>
+
+    <div class="container top-0" tabindex="-1"
+         id="chat"
+         style="width: 350px; height: 300px; top: 200px; left: 50px; padding-top: 20px; border-top-width: 10px;"
+    >
+        <textarea placeholder="Chat" style="height: 90%; margin-bottom: 10px; resize: none;"></textarea>
+    </div>
+
 </body>
 </html>

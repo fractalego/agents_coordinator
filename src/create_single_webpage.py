@@ -10,15 +10,16 @@ def embed_assets(html_file, static_folder, output_file):
     with open(html_file, "r") as file:
         html_content = file.read()
 
-    script_tags = [
-        '<script src="static/jquery.connections.js"></script>',
-        '<script src="static/generic.js"></script>',
-        '<script src="static/tile-creator.js"></script>',
-        '<script src="static/navigation.js"></script>',
-        '<script src="static/project-tile.js"></script>',
-        '<script src="static/task-tile.js"></script>',
-        '<script src="static/save.js"></script>',
-    ]
+    script_tags = []
+    for root, dirs, files in os.walk(static_folder):
+        script_tags.extend(
+            [
+                f'<script src="static/{file}"></script>'
+                for file in files
+                if file.endswith(".js")
+            ]
+        )
+
 
     for script_tag in script_tags:
         js_filename = script_tag.split('"')[1].split("/")[-1]
