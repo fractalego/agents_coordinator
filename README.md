@@ -12,4 +12,4 @@ Just open the 'notes.html' file in your browser.
 - Task notes: description only
 - Connect notes: press CTRL and click on a note to connect it to another note
 - Delete notes: press DELETE to delete a note
-- Save the webpage to keep your notes
+- Save the webpage to keep your notes# agents_coordinator
