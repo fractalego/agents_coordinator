@@ -1,3 +1,14 @@
+var initial_messages =  [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "Please follow the instructions below."
+        }
+    ]
+
 $(function () {
     $("#start").draggable({
         drag: function () {
@@ -8,19 +19,13 @@ $(function () {
     $("#start").on('click', function (event) {
         current_selection = '#start';
     });
-
     $('#start').on('click', function (event) {
         if (cntrlIsPressed && current_selection != null) {
             current_selection = null;
         }
         current_selection = '#start';
     });
-    $('#play-button').on('click', function (event) {
-        options['body'] = JSON.stringify(initial_data);
-        key = $('#key').val();
-        options['headers']['Authorization'] = `Bearer ${key}`;
-        fetch(url, options)
-            .then( res => res.json() )
-            .then( data => console.log(data) );
+    $('#play-button').on('click', async function (event) {
+        await iterate_over_connections("#start", initial_messages);
     });
 });

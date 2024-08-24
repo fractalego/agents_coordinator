@@ -29,15 +29,15 @@
          id="start"
          style="width: 200px; height: auto; top: 50px; left: 350px; padding-top: 20px; border-top-width: 10px;"
     >
-        <input type="password" id="key" name="key" placeholder="Paste your OpenAI key here." style="width: 195px" required>
-        <div style="margin-top: 5px;" class="text-center menu-item" id="play-button">Play</div>
+        <input type="password" id="key" value="" name="key" placeholder="Paste your OpenAI key here." style="width: 195px; position: center;" required>
+        <div style="margin-top: 10px;" class="text-center menu-item" id="play-button">Play</div>
     </div>
 
     <div class="container top-0" tabindex="-1"
          id="chat"
          style="width: 350px; height: 300px; top: 200px; left: 50px; padding-top: 20px; border-top-width: 10px;"
     >
-        <textarea placeholder="Chat" style="height: 90%; margin-bottom: 10px; resize: none;"></textarea>
+        <textarea id="output" placeholder="Output" style="height: 90%; margin-bottom: 10px; resize: none;" readonly></textarea>
     </div>
 
 </body>

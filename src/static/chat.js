@@ -44,7 +44,7 @@ $(function () {
 
     $('#chat').on('click', function (event) {
         var random_index = Math.floor(Math.random() * 1000000);
-        var connection_name = `connection-${random_index}`;
+        var connection_name = `chat-connection-${random_index}`;
         if (cntrlIsPressed && current_selection != null) {
             $(current_selection).connections({
                 to: '#chat',

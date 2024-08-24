@@ -14,12 +14,12 @@ function create_project_tile(container_name, x, y) {
 
 $(function () {
     $("#navigation #new-project-tile-button").on('click', function (event) {
-        create_new_tile(event, position="center", html_tile_creator=create_project_tile);
+        create_new_tile(event, position="center", html_tile_creator=create_project_tile, type="conditional");
     });
     $(document).on('keypress',function(event) {
         var tag = event.target.tagName.toLowerCase();
         if(event.which == "c".charCodeAt(0) && tag != 'input' && tag != 'textarea') {
-            create_new_tile(event, position="mouse", html_tile_creator=create_project_tile);
+            create_new_tile(event, position="mouse", html_tile_creator=create_project_tile, type="conditional");
         }
     });
 });

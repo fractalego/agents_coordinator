@@ -1,5 +1,5 @@
-function create_new_tile(event, position, html_tile_creator) {
-    var new_container_name = 'container' + Math.floor(Math.random() * 1000000);
+function create_new_tile(event, position, html_tile_creator, type) {
+    var new_container_name = `${type}_container` + Math.floor(Math.random() * 1000000);
     console.log(new_container_name);
     var screenCenterX = window.innerWidth / 2 + Math.random() * 10;
     var screenCenterY = window.innerHeight / 2 + Math.random() * 10;
@@ -13,7 +13,7 @@ function create_new_tile(event, position, html_tile_creator) {
     jQuery('body').append(
         html_tile_creator(new_container_name, screenCenterX, screenCenterY)
     )
-    var connection_name = `connection-${new_container_name}`;
+    var connection_name = `${type}_connection-${new_container_name}`;
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.text = `
