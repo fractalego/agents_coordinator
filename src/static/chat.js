@@ -45,7 +45,6 @@ $(function () {
     $('#chat').on('click', function (event) {
         var random_index = Math.floor(Math.random() * 1000000);
         var connection_name = `connection-${random_index}`;
-        console.log('#chat');
         if (cntrlIsPressed && current_selection != null) {
             $(current_selection).connections({
                 to: '#chat',
@@ -54,7 +53,6 @@ $(function () {
             connection_list_name_from_and_to.push([`${connection_name}`, current_selection, '#chat']);
             $(`.${connection_name}`).attr('tabindex', '-1');
             $(`.${connection_name}`).on('keydown', function (event) {
-                console.log('#${connection_name}');
                 $('#chat').connections('remove');
             });
         }

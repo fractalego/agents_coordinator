@@ -14,6 +14,7 @@
     <script src="static/save.js"></script>
     <script src="static/start.js"></script>
     <script src="static/chat.js"></script>
+    <script src="static/connector.js"></script>
 </head>
 <body style="height: 10000px; width: 10000px;">
     <div class="container top-0" tabindex="-1"
@@ -26,8 +27,10 @@
     </div>
     <div class="container top-0" tabindex="-1"
          id="start"
-         style="width: 50px; height: auto; top: 50px; left: 350px; padding-top: 20px; border-top-width: 10px;"
-    >Start
+         style="width: 200px; height: auto; top: 50px; left: 350px; padding-top: 20px; border-top-width: 10px;"
+    >
+        <input type="password" id="key" name="key" placeholder="Paste your OpenAI key here." style="width: 195px" required>
+        <div style="margin-top: 5px;" class="text-center menu-item" id="play-button">Play</div>
     </div>
 
     <div class="container top-0" tabindex="-1"
