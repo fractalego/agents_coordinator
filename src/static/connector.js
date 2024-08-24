@@ -33,20 +33,27 @@ async function connect_to_api(messages) {
 
 async function iterate_over_connections(start_at_id, messages) {
     already_predicted = false;
+    var prediction = "";
     for (const connection of connection_list_name_from_and_to) {
         const [connection_name, connection_from, connection_to] = connection;
+        if (connection_from == connection_to) {
+            continue;
+        }
         if (connection_from == start_at_id) {
-            if (!already_predicted) {
-                prediction = await connect_to_api(messages);
-                already_predicted = true;
-            }
             if (connection_name.indexOf("chat") == 0) {
+                if (!already_predicted) {
+                    prediction = await connect_to_api(messages);
+                    already_predicted = true;
+                }
                 $(`${connection_to} #output`).val(prediction)
             }
         }
     }
     for (const connection of connection_list_name_from_and_to) {
         const [connection_name, connection_from, connection_to] = connection;
+        if (connection_from == connection_to) {
+            continue;
+        }
         if (connection_from == start_at_id) {
             if (connection_name.indexOf("prompt") == 0) {
                 var new_messages = messages;
