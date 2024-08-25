@@ -53,7 +53,8 @@ $(function () {
             connection_list_name_from_and_to.push([`${connection_name}`, current_selection, '#chat']);
             $(`.${connection_name}`).attr('tabindex', '-1');
             $(`.${connection_name}`).on('keydown', function (event) {
-                $('#chat').connections('remove');
+                $(`.${connection_name}`).connections('remove');
+                remove_connection_from_list(`${connection_name}`);
             });
         }
         current_selection = null;

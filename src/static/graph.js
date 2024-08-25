@@ -32,12 +32,12 @@ async function iterate_over_edges(start_at_id, messages) {
         }
         if (connection_from == start_at_id) {
             if (connection_name.indexOf("prompt") == 0) {
-                var new_messages = messages;
+                let new_messages = structuredClone(messages);
                 new_messages.push({
                     "role": "user",
                     "content": $(`${connection_to} #prompt`).val()
                 });
-                iterate_over_connections(connection_to, new_messages);
+                iterate_over_edges(connection_to, new_messages);
             }
         }
     }

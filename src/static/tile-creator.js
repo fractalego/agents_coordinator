@@ -80,7 +80,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 $('.${connection_name}').attr('tabindex', '-1');
                 $('.${connection_name}').on('keydown', function (event) {
                     console.log('#${connection_name}');
-                    $('#${new_container_name}').connections('remove');
+                    $('.${connection_name}').connections('remove');
                     remove_connection_from_list('${connection_name}');
                 });
                 current_selection = null;

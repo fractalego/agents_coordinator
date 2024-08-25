@@ -26,6 +26,7 @@ $(function () {
         current_selection = '#start';
     });
     $('#play-button').on('click', async function (event) {
-        await iterate_over_edges("#start", initial_messages);
+        let start_messages = structuredClone(initial_messages);
+        await iterate_over_edges("#start", start_messages);
     });
 });

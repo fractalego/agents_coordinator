@@ -8,6 +8,8 @@
       return processConnections(update, this);
     } else if (options === "remove") {
       return processConnections(destroy, this);
+    } else if (options === "remove_connection") {
+      return processConnections(destroy, this);
     } else {
       options = $.extend(
         true,
