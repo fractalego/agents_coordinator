@@ -1,46 +1,54 @@
 $(function () {
     $('#chat').draggable({
-            start: function(event, ui) {
-                // Only start dragging if the item is selected
-                if (!$(this).hasClass('ui-selected')) {
-                    $(".draggable").removeClass('ui-selected');
-                    $(this).addClass('ui-selected');
-                }
-
-                // Save the initial position of each selected item
-                var startPosition = ui.position;
-                $(".ui-selected").each(function() {
-                    var $this = $(this);
-                    var itemPosition = $this.position();
-                    $this.data("startPos", itemPosition);
-                    $this.data("offset", {
-                        top: itemPosition.top - startPosition.top,
-                        left: itemPosition.left - startPosition.left
-                    });
-                });
-            },
-            drag: function (event, ui) {
-                // Move each selected item according to the initial offset
-                $(".ui-selected").not(this).each(function() {
-                    var $this = $(this);
-                    var offset = $this.data("offset");
-                    $this.css({
-                        top: ui.position.top + offset.top,
-                        left: ui.position.left + offset.left
-                    });
-                });
-                jQuery('#chat').connections('update');
-            },
-            stop: function (event, ui) {
-                $(".container").removeClass("ui-selected");
+        start: function(event, ui) {
+            // Only start dragging if the item is selected
+            if (!$(this).hasClass('ui-selected')) {
+                $(".draggable").removeClass('ui-selected');
+                $(this).addClass('ui-selected');
             }
-        });
-        $('#chat').resizable({
-            resize: function () {
-                jQuery('#chat').connections('update');
-            }
-        });
 
+            // Save the initial position of each selected item
+            var startPosition = ui.position;
+            $(".ui-selected").each(function() {
+                var $this = $(this);
+                var itemPosition = $this.position();
+                $this.data("startPos", itemPosition);
+                $this.data("offset", {
+                    top: itemPosition.top - startPosition.top,
+                    left: itemPosition.left - startPosition.left
+                });
+            });
+        },
+        drag: function (event, ui) {
+            // Move each selected item according to the initial offset
+            $(".ui-selected").not(this).each(function() {
+                var $this = $(this);
+                var offset = $this.data("offset");
+                $this.css({
+                    top: ui.position.top + offset.top,
+                    left: ui.position.left + offset.left
+                });
+            });
+            jQuery('#chat').connections('update');
+        },
+        stop: function (event, ui) {
+            $(".container").removeClass("ui-selected");
+        }
+    });
+    $('#chat').resizable({
+        resize: function () {
+            jQuery('#chat').connections('update');
+        }
+    });
+
+    $('#chat').on('keydown', function (event) {
+        if (event.keyCode == 46) {
+            if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                $('#chat').connections('remove');
+                this.remove();
+            }
+        }
+    });
 
     $('#chat').on('click', function (event) {
         var random_index = Math.floor(Math.random() * 1000000);
