@@ -1,7 +1,7 @@
 function create_project_tile(container_name, x, y) {
     const width = 500;
     const height = 250;
-    return `<div class="container" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px;\n` +
+    return `<div class="container conditional" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px;\n` +
             `                           top: ${y}px; left: ${x}px; position: absolute; padding-bottom: 10px">\n` +
             `<textarea id="condition" rows="1" placeholder="Condition" name="title-${container_name}">\n` +
             `</textarea>\n` +
