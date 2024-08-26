@@ -39,6 +39,21 @@ async function iterate_over_edges(start_at_id, messages) {
                 });
                 iterate_over_edges(connection_to, new_messages);
             }
+            if (connection_name.indexOf("conditional") == 0) {
+                let new_messages = structuredClone(messages);
+                let condition = $(`${connection_to} #condition`).val()
+                let prompt = $(`${connection_to} #prompt`).val()
+                prediction = await connect_to_api(new_messages);
+                let entailment_messages = create_entailment_messages(prediction, condition)
+                prediction = await connect_to_api(entailment_messages);
+                if (prediction[0] == "Y") {
+                    new_messages.push({
+                        "role": "user",
+                        "content": prompt,
+                    });
+                    iterate_over_edges(connection_to, new_messages);
+                }
+            }
         }
     }
 }

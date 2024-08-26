@@ -3,10 +3,10 @@ function create_project_tile(container_name, x, y) {
     const height = 250;
     return `<div class="container" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px;\n` +
             `                           top: ${y}px; left: ${x}px; position: absolute; padding-bottom: 10px">\n` +
-            `<textarea rows="1" placeholder="Title" name="title-${container_name}">\n` +
+            `<textarea id="condition" rows="1" placeholder="Condition" name="title-${container_name}">\n` +
             `</textarea>\n` +
             `<div class="container-separator" style="width: 100%; height: 10px;"></div>\n` +
-            `<textarea placeholder="Description" style="height: 70%; margin-bottom: 10px; resize: none;" name="description-${container_name}">\n` +
+            `<textarea id="prompt" placeholder="Prompt" style="height: 70%; margin-bottom: 10px; resize: none;" name="description-${container_name}">\n` +
             `</textarea>\n` +
             `</div>`
 }
