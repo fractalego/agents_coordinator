@@ -8,8 +8,8 @@
 .container {
     margin: 5px;
     padding: 5px;
-    border: 1px solid #6ad9e1;
-    background-color: #f8efed;
+    border: 1px solid #0CA4A5;
+    background-color: #faefed;
     font-family: Inconsolata, monospace;
     border-radius: 5px;
     overflow: hidden;
@@ -19,7 +19,7 @@
     border-color: darkblue;
 }
 .container:focus {
-    outline: 2px solid #20a8d8;
+    outline: 2px solid #06908F;
 }
 
 .container .results {
@@ -58,4 +58,8 @@
 .menu-item:hover {
     background-color: lightgrey;
     cursor: pointer;
+}
+
+.output {
+    border: 1px solid #0892A5;
 }
