@@ -39,6 +39,14 @@ async function iterate_over_edges(start_at_id, messages) {
                 });
                 iterate_over_edges(connection_to, new_messages);
             }
+            if (connection_name.indexOf("chat") == 0) {
+                let new_messages = structuredClone(messages);
+                new_messages.push({
+                    "role": "user",
+                    "content": $(`${connection_to} #output`).val()
+                });
+                iterate_over_edges(connection_to, new_messages);
+            }
             if (connection_name.indexOf("conditional") == 0) {
                 let new_messages = structuredClone(messages);
                 let condition = $(`${connection_to} #condition`).val()
@@ -53,6 +61,29 @@ async function iterate_over_edges(start_at_id, messages) {
                     });
                     iterate_over_edges(connection_to, new_messages);
                 }
+            }
+            if (connection_name.indexOf("executor") == 0) {
+                let new_messages = structuredClone(messages);
+                let instruction = $(`${connection_to} #instruction`).val();
+                let prompt = get_executor_prompt(instruction);
+                new_messages.push({
+                    "role": "user",
+                    "content": prompt,
+                });
+                prediction = await connect_to_api(new_messages);
+                let result = "";
+                let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
+
+                // execute the code and catch any errors
+                try {
+                    eval(code);
+                } catch (error) {
+                    result = error.toString();
+                }
+                $(`${connection_to} #result`).text(result);
+                // substitute the result into new_messages last element
+                new_messages[new_messages.length - 1].content = `The assistant knows:\n ${result}`;
+                iterate_over_edges(connection_to, new_messages);
             }
         }
     }

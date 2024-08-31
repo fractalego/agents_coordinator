@@ -44,7 +44,7 @@ if __name__ == "__main__":
     js_folder = "static"
     template_folder = "templates"
     html_file = "index.html"
-    output_file = "notes.html"
+    output_file = "organizer.html"
 
     embed_assets(
         os.path.join(local_file_path, template_folder, html_file),

@@ -4,7 +4,7 @@ function create_output_tile(container_name, x, y) {
      id="${container_name}"
      style="width: 350px; height: 300px; border-top-width: 10px; top: ${y}px; left: ${x}px; position: absolute; padding-bottom: 10px"
 >
-<textarea id="output" placeholder="Output" style="height: 90%; margin-bottom: 10px; resize: none;" readonly></textarea>
+<textarea id="output" placeholder="Output" style="height: 90%; margin-bottom: 10px; resize: none; border: 1px solid darkgray;" readonly></textarea>
 </div>
 `
 }

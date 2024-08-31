@@ -8,8 +8,8 @@
 .container {
     margin: 5px;
     padding: 5px;
-    border: 1px solid #0CA4A5;
-    background-color: #faefed;
+    border: 1px solid #B8B8D1;
+    background-color: #FFFFFB;
     font-family: Inconsolata, monospace;
     border-radius: 5px;
     overflow: hidden;
@@ -19,7 +19,7 @@
     border-color: darkblue;
 }
 .container:focus {
-    outline: 2px solid #06908F;
+    outline: 2px solid #5B5F97;
 }
 
 .container .results {
@@ -61,5 +61,9 @@
 }
 
 .output {
-    border: 1px solid #0892A5;
+    border: 1px solid #FF6B6C;
+}
+
+.executor {
+    border: 1px solid #556B6C;
 }
