@@ -1,9 +1,9 @@
 function create_executor_tile(container_name, x, y) {
     const width = 500;
-    const height = 250;
+    const height = 300;
     return `
-<div class="container executor flex-col" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px;
-            top: ${y}px; left: ${x}px; position: absolute; border-top-width: 10px;">
+<div class="container executor flex-col" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px; 
+            top: ${y}px; left: ${x}px; position: absolute; border-top-width: 10px; padding-bottom: 20px;">
     <textarea id="instruction" rows="1" placeholder="Instruction" name="title-${container_name}" style="border: 1px solid darkgray;"></textarea>
     <div class="container-separator" style="width: 100%; height: 10px;"></div>                  
     <div class="flex">                
@@ -14,12 +14,15 @@ function create_executor_tile(container_name, x, y) {
             Code
         </button>
     </div>
-    <div id="tab1-${container_name}" class="tab-content p-4">
-        <textarea id="result" class="h-full" placeholder="Result" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}" readonly></textarea>       
+    <div style="height: calc(100% - 100px);">
+        <div id="tab1-${container_name}" class="tab-content p-4">
+            <textarea id="result" class="h-full" placeholder="Result" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}" readonly></textarea>       
+        </div>
+        <div id="tab2-${container_name}" class="tab-content p-4 hidden">
+            <textarea id="code" class="h-full" placeholder="Code" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}"></textarea>
+        </div>
     </div>
-    <div id="tab2-${container_name}" class="tab-content p-4 hidden">
-        <textarea id="code" class="h-full" placeholder="Code" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}"></textarea>
-    </div>
+  
 </div>
 <script>
     $(document).ready(function () {
