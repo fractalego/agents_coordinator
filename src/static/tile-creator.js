@@ -49,6 +49,11 @@ function create_new_tile(event, position, html_tile_creator, type) {
                     });
                 });   
                 jQuery('#${new_container_name}').connections('update');
+                $(".ui-selected").each(function() {
+                    var $this = $(this);
+                    $this.connections('update');
+                });
+                    
             },
             stop: function (event, ui) {                   
                 $(".container").removeClass("ui-selected");

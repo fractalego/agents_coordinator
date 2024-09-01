@@ -2,9 +2,6 @@ import flask
 from flask import render_template
 
 app = flask.Flask(__name__, static_folder="./static", template_folder="./templates")
-## add cors support
-from flask_cors import CORS
-CORS(app)
 
 
 def index():
