@@ -73,15 +73,14 @@ async function iterate_over_edges(start_at_id, messages) {
                 prediction = await connect_to_api(new_messages);
                 let result = "";
                 let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
-
-                // execute the code and catch any errors
+                $(`${connection_to} #code`).text(code);
                 try {
                     eval(code);
                 } catch (error) {
                     result = error.toString();
                 }
                 $(`${connection_to} #result`).text(result);
-                // substitute the result into new_messages last element
+
                 new_messages[new_messages.length - 1].content = `The assistant knows:\n ${result}`;
                 iterate_over_edges(connection_to, new_messages);
             }
