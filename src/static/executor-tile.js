@@ -15,10 +15,10 @@ function create_executor_tile(container_name, x, y) {
         </button>
     </div>
     <div style="height: calc(100% - 100px);">
-        <div id="tab1-${container_name}" class="tab-content p-4">
+        <div id="tab1-${container_name}" class="tab-content">
             <textarea id="result" class="h-full" placeholder="Result" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}" readonly></textarea>       
         </div>
-        <div id="tab2-${container_name}" class="tab-content p-4 hidden">
+        <div id="tab2-${container_name}" class="tab-content hidden">
             <textarea id="code" class="h-full" placeholder="Code" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}"></textarea>
         </div>
     </div>

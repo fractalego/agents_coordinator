@@ -33,10 +33,15 @@ async function iterate_over_edges(start_at_id, messages) {
         if (connection_from == start_at_id) {
             if (connection_name.indexOf("prompt") == 0) {
                 let new_messages = structuredClone(messages);
+                current_prompt = $(`${connection_to} #prompt`).val();
+                prior_prompts = collect_prior_prompts(connection_to);
+                if (prior_prompts.length > 0)
+                    current_prompt = current_prompt + "\n\n<additional_information>" + prior_prompts.join("\n") + "</additional_information>";
                 new_messages.push({
                     "role": "user",
-                    "content": $(`${connection_to} #prompt`).val()
+                    "content": current_prompt,
                 });
+
                 iterate_over_edges(connection_to, new_messages);
             }
             if (connection_name.indexOf("chat") == 0) {
@@ -86,4 +91,20 @@ async function iterate_over_edges(start_at_id, messages) {
             }
         }
     }
+}
+
+function collect_prior_prompts(start_at_id) {
+    let prompts = [];
+    for (const connection of connection_list_name_from_and_to) {
+        const [connection_name, connection_from, connection_to] = connection;
+        if (connection_from == connection_to) {
+            continue;
+        }
+        if (connection_to == start_at_id) {
+            if (connection_name.indexOf("prompt") == 0) {
+                prompts.push($(`${connection_from} #prompt`).val());
+            }
+        }
+    }
+    return prompts;
 }
