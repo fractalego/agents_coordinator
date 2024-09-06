@@ -18,10 +18,12 @@ async function iterate_over_edges(start_at_id, messages) {
         if (connection_from == start_at_id) {
             if (connection_name.indexOf("chat") == 0) {
                 if (!already_predicted) {
+                    $(`${connection_to} #spinner`).html(spinner);
                     prediction = await connect_to_api(messages);
                     already_predicted = true;
                 }
-                $(`${connection_to} #output`).val(prediction)
+                $(`${connection_to} #output`).val(prediction);
+                $(`${connection_to} #spinner`).html("");
             }
         }
     }
@@ -56,9 +58,11 @@ async function iterate_over_edges(start_at_id, messages) {
                 let new_messages = structuredClone(messages);
                 let condition = $(`${connection_to} #condition`).val()
                 let prompt = $(`${connection_to} #prompt`).val()
+                $(`${connection_to} #spinner`).html(spinner);
                 prediction = await connect_to_api(new_messages);
                 let entailment_messages = create_entailment_messages(prediction, condition)
                 prediction = await connect_to_api(entailment_messages);
+                $(`${connection_to} #spinner`).html("");
                 if (prediction[0] == "Y") {
                     new_messages.push({
                         "role": "user",
@@ -75,6 +79,7 @@ async function iterate_over_edges(start_at_id, messages) {
                     "role": "user",
                     "content": prompt,
                 });
+                $(`${connection_to} #spinner`).html(spinner);
                 prediction = await connect_to_api(new_messages);
                 let result = "";
                 let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
@@ -85,8 +90,8 @@ async function iterate_over_edges(start_at_id, messages) {
                     result = error.toString();
                 }
                 $(`${connection_to} #result`).text(result);
-
                 new_messages[new_messages.length - 1].content = `The assistant knows:\n ${result}`;
+                $(`${connection_to} #spinner`).html("");
                 iterate_over_edges(connection_to, new_messages);
             }
         }

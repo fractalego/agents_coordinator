@@ -4,6 +4,7 @@ function create_output_tile(container_name, x, y) {
      id="${container_name}"
      style="width: 350px; height: 300px; border-top-width: 10px; top: ${y}px; left: ${x}px; position: absolute; padding-bottom: 10px"
 >
+<div class="container-separator mb-2" style="width: 100%; height: 10px;" id="spinner"></div>
 <textarea id="output" placeholder="Output" style="height: 90%; margin-bottom: 10px; resize: none; border: 1px solid darkgray;" readonly></textarea>
 </div>
 `
