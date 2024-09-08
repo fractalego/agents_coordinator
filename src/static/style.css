@@ -67,3 +67,12 @@
 .executor {
     border: 1px solid #556B6C;
 }
+
+#pin:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.bold-svg {
+    fill: darkgrey;
+}

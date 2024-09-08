@@ -57,7 +57,8 @@ function create_new_tile(event, position, html_tile_creator, type) {
             },
             stop: function (event, ui) {                   
                 $(".container").removeClass("ui-selected");
-            }
+            },
+            cancel: '#pin'
         });
         $('#${new_container_name}').resizable({
             resize: function () {
@@ -75,6 +76,20 @@ function create_new_tile(event, position, html_tile_creator, type) {
         });
 
         $('#${new_container_name}').on('click', function (event) {
+            console.log(event.target.closest("#pin"));
+            if (event.target.closest("#pin") != null) {
+                let target = $('#${new_container_name} #pin'); 
+                if (target.hasClass("unselected")) {
+                    target.removeClass("unselected");
+                    target.addClass("selected");
+                    $("#${new_container_name} #pin svg").toggleClass("bold-svg");
+                }
+                else {
+                    $("#${new_container_name} #pin svg").toggleClass("bold-svg");
+                    target.removeClass("selected");
+                    target.addClass("unselected");
+                };
+            }
             console.log('#${new_container_name}');
             if (cntrlIsPressed && current_selection != null) {                
                 $(current_selection).connections({
