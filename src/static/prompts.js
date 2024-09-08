@@ -41,3 +41,19 @@ The code cannot be asynchronous. Do not use async/await or Promises.
 Wrap the code in <execute> tags.
 `
 }
+
+function get_dashboard_prompt(instruction) {
+    return `
+Create an html code that follows the instruction. The instruction is:
+${instruction}
+
+You must create just the html code. Do not use Markdown.
+The code is contained in a single <div> tag and must be able to run in a browser environment.
+Never create a single web page!!
+Never use the <script> tag!!
+Never use the <style> tag!!
+Never use the <body> tag!!
+Never use the <head> tag!!
+Never use the <html> tag!!
+`
+}

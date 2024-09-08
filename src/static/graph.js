@@ -84,12 +84,12 @@ async function iterate_over_edges(start_at_id, messages) {
                     "content": prompt,
                 });
                 has_pin = $(`${connection_to} #pin`).hasClass("selected");
-                let code = $(`${connection_to} #code`).text();
+                let code = $(`${connection_to} #code`).val();
+                let result = "";
                 if (!has_pin) {
                     $(`${connection_to} #spinner`).html(spinner);
                     prediction = await connect_to_api(new_messages);
-                    let result = "";
-                    let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
+                    code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
                 }
                 $(`${connection_to} #code`).text(code);
                 try {
@@ -102,6 +102,29 @@ async function iterate_over_edges(start_at_id, messages) {
                 $(`${connection_to} #spinner`).html("");
                 iterate_over_edges(connection_to, new_messages);
             }
+            if (connection_name.indexOf("dashboard") == 0) {
+                let new_messages = structuredClone(messages);
+                let instruction = $(`${connection_to} #instruction`).val();
+                let prompt = get_dashboard_prompt(instruction);
+                new_messages.push({
+                    "role": "user",
+                    "content": prompt,
+                });
+                has_pin = $(`${connection_to} #pin`).hasClass("selected");
+                let code = $(`${connection_to} #code`).val();
+                if (!has_pin) {
+                    $(`${connection_to} #spinner`).html(spinner);
+                    code = await connect_to_api(new_messages);
+                }
+                code = code.replaceAll("<html", "div").replaceAll("html>", "div>").replaceAll("<head", "div").replaceAll("head>", "div>").replaceAll("<body", "div").replaceAll("body>", "div>");
+
+                $(`${connection_to} #code`).val(code);
+                $(`${connection_to} #result`).html(code);
+                new_messages[new_messages.length - 1].content = `The assistant knows:\n ${code}`;
+                $(`${connection_to} #spinner`).html("");
+                iterate_over_edges(connection_to, new_messages);
+            }
+
         }
     }
 }
