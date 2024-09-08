@@ -105,7 +105,6 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 current_selection = null;
             }
             current_selection = '#${new_container_name}';
-
         });
     });
     `;

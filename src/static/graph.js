@@ -17,6 +17,10 @@ async function iterate_over_edges(start_at_id, messages) {
         }
         if (connection_from == start_at_id) {
             if (connection_name.indexOf("chat") == 0) {
+                has_pin = $(`${connection_to} #pin`).hasClass("selected");
+                if (has_pin) {
+                    continue;
+                }
                 if (!already_predicted) {
                     $(`${connection_to} #spinner`).html(spinner);
                     prediction = await connect_to_api(messages);
@@ -79,10 +83,14 @@ async function iterate_over_edges(start_at_id, messages) {
                     "role": "user",
                     "content": prompt,
                 });
-                $(`${connection_to} #spinner`).html(spinner);
-                prediction = await connect_to_api(new_messages);
-                let result = "";
-                let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
+                has_pin = $(`${connection_to} #pin`).hasClass("selected");
+                let code = $(`${connection_to} #code`).text();
+                if (!has_pin) {
+                    $(`${connection_to} #spinner`).html(spinner);
+                    prediction = await connect_to_api(new_messages);
+                    let result = "";
+                    let code = prediction.match(/<execute>([\s\S]*?)<\/execute>/)[1];
+                }
                 $(`${connection_to} #code`).text(code);
                 try {
                     eval(code);

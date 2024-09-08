@@ -5,10 +5,7 @@ function create_project_tile(container_name, x, y) {
 <div class="container conditional" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px;
             top: ${y}px; left: ${x}px; position: absolute; padding-bottom: 10px; border-top-width: 10px;">
     <textarea id="condition" rows="1" placeholder="Condition" name="title-${container_name}" style="border: 1px solid darkgray;"></textarea>
-    <div class="flex display">
-        <div id="pin" class="container-separator mb-2 mr-2 unselected top-0" style="height: 16px; width: 16px;">${pin}</div>
-        <div class="container-separator mb-2" style="width: 100%; height: 16px;" id="spinner"></div>
-    </div>
+    <div class="container-separator" style="width: 100%; height: 10px;"></div>
     <textarea id="prompt" placeholder="Prompt" style="height: 70%; margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}"></textarea>
     </div>
 `
