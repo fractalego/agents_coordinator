@@ -58,7 +58,6 @@ function create_new_tile(event, position, html_tile_creator, type) {
             stop: function (event, ui) {                   
                 $(".container").removeClass("ui-selected");
             },
-            cancel: '#pin'
         });
         $('#${new_container_name}').resizable({
             resize: function () {
