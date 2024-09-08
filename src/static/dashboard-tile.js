@@ -19,7 +19,7 @@ function create_dashboard_tile(container_name, x, y) {
     </div>
     <div style="height: calc(100% - 100px);">
         <div id="tab1-${container_name}" class="tab-content">
-            <div id="result" class="h-full" placeholder="Result" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}" readonly></div>       
+            <div id="result" class="h-full overflow-auto" placeholder="Result" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}" readonly></div>       
         </div>
         <div id="tab2-${container_name}" class="tab-content hidden">
             <textarea id="code" class="h-full" placeholder="Code" style="margin-bottom: 10px; resize: none; border: 1px solid darkgray;" name="description-${container_name}"></textarea>
