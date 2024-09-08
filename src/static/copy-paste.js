@@ -12,26 +12,32 @@ $(function() {
         if (event.ctrlKey && event.key === 'c') {
             copiedElements = [];
             $(".ui-selected").each(function() {
-                // Clone and store a tuple of selected elements with their original position relative to the cursor
                 copiedElements.push([$(this).clone(), $(this).offset().left - mouseX, $(this).offset().top - mouseY]);
             });
-            event.preventDefault(); // Prevent default copy behavior
+            if (copiedElements.length === 0) {
+                $(".container").each(function() {
+                    if ($(this).is(":focus")) {
+                        copiedElements.push([$(this).clone(), $(this).offset().left - mouseX, $(this).offset().top - mouseY]);
+                    }
+                });
+            }
+            event.preventDefault();
         }
 
-        // Handle Ctrl+V for pasting copied elements
         if (event.ctrlKey && event.key === 'v') {
             if (copiedElements.length > 0) {
                 copiedElements.forEach(function(el_x_y) {
                     var [el, xpos, ypos] = el_x_y;
                     var newElement = el.clone().removeClass("ui-selected"); // Clone and remove ui-selected class
-                    newElement.attr('id', newElement.attr('id') + '-copy');
+                    let random_string = Math.random().toString(36).substring(7);
+                    newElement.attr('id', newElement.attr('id') + '-copy' + random_string);
                     let new_id = newElement.attr('id');
                     var connection_name = new_id.replace('container', 'connection');
                     newElement.css({
                         position: 'absolute',
                         // the top and left corner of the element will be at the cursor position
-                        top: mouseY + ypos + newElement.outerHeight(),
-                        left: mouseX + xpos + newElement.outerHeight()
+                        top: mouseY + ypos - newElement.outerHeight()/2,
+                        left: mouseX + xpos - newElement.outerWidth()/2
                     });
                     newElement.draggable({
                         start: function(event, ui) {

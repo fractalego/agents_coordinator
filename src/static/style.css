@@ -18,6 +18,7 @@
 .ui-selected {
     border-color: darkblue;
 }
+
 .container:focus {
     outline: 2px solid #5B5F97;
 }
