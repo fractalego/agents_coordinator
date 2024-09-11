@@ -1,6 +1,7 @@
 function create_executor_tile(container_name, x, y) {
     const width = 500;
     const height = 300;
+    let script_tag = "script";
     return `
 <div class="container executor flex-col" id="${container_name}" tabindex="-1" style="width: ${width}px; height: ${height}px; 
             top: ${y}px; left: ${x}px; position: absolute; border-top-width: 10px; padding-bottom: 20px;">
@@ -27,7 +28,7 @@ function create_executor_tile(container_name, x, y) {
     </div>
   
 </div>
-<script>
+<${script_tag}>
     $(document).ready(function () {
         // On tab button click
         $('.tab-btn').click(function () {
@@ -44,7 +45,7 @@ function create_executor_tile(container_name, x, y) {
             $('#' + $(this).data('tab')).removeClass('hidden');
         });
     });
-</script>
+</${script_tag}>
       `
 }
 

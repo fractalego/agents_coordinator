@@ -19,6 +19,12 @@ function refactor_connections(pageContent) {
             });
         `);
         pageContent.find('head').append(newScript);
+        var latestConnections = $('<script>')
+        .attr('type', 'text/javascript')
+        .text(`
+            connection_list_name_from_and_to = ${JSON.stringify(connection_list_name_from_and_to)};
+        `);
+        pageContent.find('head').append(latestConnections);
     }
 }
 
