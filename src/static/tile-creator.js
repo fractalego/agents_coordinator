@@ -68,6 +68,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
             console.log('#${new_container_name}')
             if (event.keyCode == 46) {
                 if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                    remove_connection_to_and_from('${new_container_name}');
                     $('#${new_container_name}').connections('remove');
                     this.remove();
                 }
