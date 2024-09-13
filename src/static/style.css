@@ -48,12 +48,7 @@
 }
 
 .my-connection {
-    border-radius: 15px;
-    border-color:#6ad9e1;
-}
-
-.my-connection:focus {
-    border-color: black;
+    border-radius: 0px;
 }
 
 .menu-item:hover {

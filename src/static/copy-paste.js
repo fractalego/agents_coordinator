@@ -36,8 +36,8 @@ $(function() {
                     newElement.css({
                         position: 'absolute',
                         // the top and left corner of the element will be at the cursor position
-                        top: mouseY + ypos - newElement.outerHeight()/2,
-                        left: mouseX + xpos - newElement.outerWidth()/2
+                        top: mouseY + ypos + newElement.outerHeight()/2,
+                        left: mouseX + xpos + newElement.outerWidth()/2
                     });
                     newElement.draggable({
                         start: function(event, ui) {

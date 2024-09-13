@@ -15,12 +15,6 @@ $(document).keydown(function (event) {
         cntrlIsPressed = true;
 });
 
-$(document).keydown(function (event) {
-    if (event.which == "47")
-        $(selected_connection).connections('remove');
-});
-
-
 
 $(document).keyup(function () {
     cntrlIsPressed = false;

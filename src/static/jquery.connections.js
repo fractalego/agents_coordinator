@@ -217,7 +217,8 @@
       v[1] +
       "-" +
       h[0] +
-      "-radius: 0;";
+      "-radius: 0;"
+    ;
     (border_h <= 0 || border_w <= 0) &&
       (style += "border-" + v[1] + "-" + h[1] + "-radius: 0;");
     if (data.hidden) {
@@ -227,6 +228,18 @@
       data.css["border-" + h[0] + "-width"] = 0;
       data.css["border-" + v[1] + "-width"] = border_h;
       data.css["border-" + h[1] + "-width"] = border_w;
+      let degrees = "";
+      if (v[1] === "top" && h[1] === "right") {
+        degrees = "-45deg";
+      } else if (v[1] === "top" && h[1] === "left") {
+        degrees = "45deg";
+      } else if (v[1] === "bottom" && h[1] === "right") {
+        degrees = "-135deg";
+      } else if (v[1] === "bottom" && h[1] === "left") {
+        degrees = "135deg";
+      }
+      data.css["border-image"] = `linear-gradient(${degrees}, white, darkblue) 1 round`;
+
       var current_rect = connection.getBoundingClientRect();
       data.css.left = connection.offsetLeft + l - current_rect.left;
       data.css.top = connection.offsetTop + t - current_rect.top;
@@ -239,7 +252,7 @@
       $("#" + data.node_to[0].id).css("border-width", 1);
       if (data.css.left > data.rect_to.left) {
         if(v[1] === "bottom") {
-          $("#" + data.node_to[0].id).css("border-top-width", target_border_witdh);
+           $("#" + data.node_to[0].id).css("border-top-width", target_border_witdh);
         } else {
             $("#" + data.node_to[0].id).css("border-bottom-width", target_border_witdh);
         }
