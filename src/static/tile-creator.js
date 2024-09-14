@@ -20,7 +20,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
     $(function () {
         $('#${new_container_name}').draggable({
             start: function(event, ui) {
-                prior_pages.push(get_working_html_page());
+                savePageState();
                 // Only start dragging if the item is selected
                 if (!$(this).hasClass('ui-selected')) {
                     $(".draggable").removeClass('ui-selected');
@@ -62,14 +62,14 @@ function create_new_tile(event, position, html_tile_creator, type) {
         });
         $('#${new_container_name}').resizable({
             start: function(event, ui) {
-                prior_pages.push(get_working_html_page());
+                savePageState();
             },
             resize: function () {
                 jQuery('#${new_container_name}').connections('update');
             }
         });
         $('#${new_container_name}').on('keydown', function (event) {
-            prior_pages.push(get_working_html_page());
+            savePageState();
             console.log('#${new_container_name}')
             if (event.keyCode == 46) {
                 if (document.activeElement.tagName.toLowerCase() != "textarea") {
@@ -81,7 +81,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
         });
 
         $('#${new_container_name}').on('click', function (event) {
-            prior_pages.push(get_working_html_page());
+            savePageState();
             console.log(event.target.closest("#pin"));
             if (event.target.closest("#pin") != null) {
                 let target = $('#${new_container_name} #pin'); 
@@ -106,7 +106,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 $('.${connection_name}').attr('tabindex', '-1');
                 $('.${connection_name}').on('keydown', function (event) {
                     console.log('#${connection_name}');
-                    prior_pages.push(get_working_html_page());
+                    savePageState();
                     $('.${connection_name}').connections('remove');
                     remove_connection_from_list('${connection_name}');
                 });
