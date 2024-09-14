@@ -37,16 +37,11 @@ function executeScripts() {
         var oldScript = $(this);
         if (oldScript.attr('src')) {
             var newScript = document.createElement('script');
-            newScript.src = oldScript.attr('src');
-            newScript.type = oldScript.attr('type') || 'text/javascript';
+
             document.head.appendChild(newScript); // Reload external script
         } else {
             var scriptContent = oldScript.html();
-            try {
-                new Function(scriptContent)();
-            } catch (e) {
-                console.error("Error in executing script:", e);
-            }
+            document.head.appendChild(document.createElement('script')).innerHTML = scriptContent; // Reload internal script
         }
     });
 }
