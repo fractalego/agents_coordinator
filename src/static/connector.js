@@ -1,4 +1,4 @@
-const url = "https://api.openai.com/v1/chat/completions";
+var url = "https://api.openai.com/v1/chat/completions";
 
 
 var initial_data = {

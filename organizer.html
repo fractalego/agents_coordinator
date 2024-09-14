@@ -52,12 +52,7 @@
 }
 
 .my-connection {
-    border-radius: 15px;
-    border-color:#6ad9e1;
-}
-
-.my-connection:focus {
-    border-color: black;
+    border-radius: 0px;
 }
 
 .menu-item:hover {
@@ -306,8 +301,10 @@
       v[1] +
       "-" +
       h[0] +
-      "-radius: 0;";
+      "-radius: 0;"
+    ;
     (border_h <= 0 || border_w <= 0) &&
+
       (style += "border-" + v[1] + "-" + h[1] + "-radius: 0;");
     if (data.hidden) {
       style += "display: none;";
@@ -316,6 +313,18 @@
       data.css["border-" + h[0] + "-width"] = 0;
       data.css["border-" + v[1] + "-width"] = border_h;
       data.css["border-" + h[1] + "-width"] = border_w;
+      let degrees = "";
+      if (v[1] === "top" && h[1] === "right") {
+        degrees = "-45deg";
+      } else if (v[1] === "top" && h[1] === "left") {
+        degrees = "45deg";
+      } else if (v[1] === "bottom" && h[1] === "right") {
+        degrees = "-135deg";
+      } else if (v[1] === "bottom" && h[1] === "left") {
+        degrees = "135deg";
+      }
+      data.css["border-image"] = `linear-gradient(${degrees}, white, darkblue) 1 round`;
+
       var current_rect = connection.getBoundingClientRect();
       data.css.left = connection.offsetLeft + l - current_rect.left;
       data.css.top = connection.offsetTop + t - current_rect.top;
@@ -328,7 +337,7 @@
       $("#" + data.node_to[0].id).css("border-width", 1);
       if (data.css.left > data.rect_to.left) {
         if(v[1] === "bottom") {
-          $("#" + data.node_to[0].id).css("border-top-width", target_border_witdh);
+           $("#" + data.node_to[0].id).css("border-top-width", target_border_witdh);
         } else {
             $("#" + data.node_to[0].id).css("border-bottom-width", target_border_witdh);
         }
@@ -375,6 +384,7 @@ var current_selection = null;
 var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
 var mousex = 0, mousey = 0;
+var prior_pages = [];
 
 $(function() {
     // Make the entire body selectable
@@ -388,16 +398,40 @@ $(document).keydown(function (event) {
         cntrlIsPressed = true;
 });
 
-$(document).keydown(function (event) {
-    if (event.which == "47")
-        $(selected_connection).connections('remove');
-});
-
-
 
 $(document).keyup(function () {
     cntrlIsPressed = false;
 });
+
+
+$(document).keydown(function (event) {
+    if (event.which == "90" && cntrlIsPressed) {
+        if (prior_pages.length > 0) {
+            var last_page = prior_pages.pop();
+            $("html").replaceWith(last_page);
+            executeScripts();
+        }
+    }
+});
+
+function executeScripts() {
+    $('script').each(function() {
+        var oldScript = $(this);
+        if (oldScript.attr('src')) {
+            var newScript = document.createElement('script');
+            newScript.src = oldScript.attr('src');
+            newScript.type = oldScript.attr('type') || 'text/javascript';
+            document.head.appendChild(newScript); // Reload external script
+        } else {
+            var scriptContent = oldScript.html();
+            try {
+                new Function(scriptContent)();
+            } catch (e) {
+                console.error("Error in executing script:", e);
+            }
+        }
+    });
+}
 
 $(document).ready(function () {
     var isMiddleButtonPressed = false;
@@ -458,6 +492,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
     $(function () {
         $('#${new_container_name}').draggable({
             start: function(event, ui) {
+                prior_pages.push(get_working_html_page());
                 // Only start dragging if the item is selected
                 if (!$(this).hasClass('ui-selected')) {
                     $(".draggable").removeClass('ui-selected');
@@ -498,14 +533,19 @@ function create_new_tile(event, position, html_tile_creator, type) {
             },
         });
         $('#${new_container_name}').resizable({
+            start: function(event, ui) {
+                prior_pages.push(get_working_html_page());
+            },
             resize: function () {
                 jQuery('#${new_container_name}').connections('update');
             }
         });
         $('#${new_container_name}').on('keydown', function (event) {
+            prior_pages.push(get_working_html_page());
             console.log('#${new_container_name}')
             if (event.keyCode == 46) {
                 if (document.activeElement.tagName.toLowerCase() != "textarea") {
+                    remove_connection_to_and_from('${new_container_name}');
                     $('#${new_container_name}').connections('remove');
                     this.remove();
                 }
@@ -513,6 +553,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
         });
 
         $('#${new_container_name}').on('click', function (event) {
+            prior_pages.push(get_working_html_page());
             console.log(event.target.closest("#pin"));
             if (event.target.closest("#pin") != null) {
                 let target = $('#${new_container_name} #pin'); 
@@ -537,8 +578,15 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 $('.${connection_name}').attr('tabindex', '-1');
                 $('.${connection_name}').on('keydown', function (event) {
                     console.log('#${connection_name}');
+                    prior_pages.push(get_working_html_page());
                     $('.${connection_name}').connections('remove');
                     remove_connection_from_list('${connection_name}');
+                });
+                $('.${connection_name}').focus(function() {
+                    $('.${connection_name}').css({
+                        'border-image': 'none', // Remove gradient border
+                        'border-color': 'black', // Set solid black border                       
+                    });
                 });
                 current_selection = null;
             }
@@ -645,14 +693,21 @@ function refactor_connections(pageContent) {
     }
 }
 
+
+function get_working_html_page() {
+    var pageContent = $('html').clone();
+    refactor_connections(pageContent);
+    pageContent.find('textarea').each(function() {
+        $(this).text($(this).val());
+    });
+    pageContent.find('.my-connection').remove();
+    return pageContent;
+}
+
+
 $(document).ready(function() {
     $('#save-button').click(function() {
-        var pageContent = $('html').clone(); // Clone the HTML content
-        refactor_connections(pageContent);
-        pageContent.find('textarea').each(function() {
-            $(this).text($(this).val()); // Update textareas with their current values
-        });
-        pageContent.find('.my-connection').remove();
+        var pageContent = get_working_html_page();
         var blob = new Blob([pageContent.html()], { type: 'text/html' });
 
         var link = document.createElement('a');
@@ -699,80 +754,7 @@ $(function () {
 });
 </script>
     <script>
-$(function () {
-    $('#chat').draggable({
-        start: function(event, ui) {
-            // Only start dragging if the item is selected
-            if (!$(this).hasClass('ui-selected')) {
-                $(".draggable").removeClass('ui-selected');
-                $(this).addClass('ui-selected');
-            }
-
-            // Save the initial position of each selected item
-            var startPosition = ui.position;
-            $(".ui-selected").each(function() {
-                var $this = $(this);
-                var itemPosition = $this.position();
-                $this.data("startPos", itemPosition);
-                $this.data("offset", {
-                    top: itemPosition.top - startPosition.top,
-                    left: itemPosition.left - startPosition.left
-                });
-            });
-        },
-        drag: function (event, ui) {
-            // Move each selected item according to the initial offset
-            $(".ui-selected").not(this).each(function() {
-                var $this = $(this);
-                var offset = $this.data("offset");
-                $this.css({
-                    top: ui.position.top + offset.top,
-                    left: ui.position.left + offset.left
-                });
-            });
-            jQuery('#chat').connections('update');
-        },
-        stop: function (event, ui) {
-            $(".container").removeClass("ui-selected");
-        }
-    });
-    $('#chat').resizable({
-        resize: function () {
-            jQuery('#chat').connections('update');
-        }
-    });
-
-    $('#chat').on('keydown', function (event) {
-        if (event.keyCode == 46) {
-            if (document.activeElement.tagName.toLowerCase() != "textarea") {
-                $('#chat').connections('remove');
-                this.remove();
-            }
-        }
-    });
-
-    $('#chat').on('click', function (event) {
-        var random_index = Math.floor(Math.random() * 1000000);
-        var connection_name = `chat-connection-${random_index}`;
-        if (cntrlIsPressed && current_selection != null) {
-            $(current_selection).connections({
-                to: '#chat',
-                'class': `my-connection ${connection_name}`
-            });
-            connection_list_name_from_and_to.push([`${connection_name}`, current_selection, '#chat']);
-            $(`.${connection_name}`).attr('tabindex', '-1');
-            $(`.${connection_name}`).on('keydown', function (event) {
-                $(`.${connection_name}`).connections('remove');
-                remove_connection_from_list(`${connection_name}`);
-            });
-        }
-        current_selection = null;
-
-    });
-});
-</script>
-    <script>
-const url = "https://api.openai.com/v1/chat/completions";
+var url = "https://api.openai.com/v1/chat/completions";
 
 
 var initial_data = {
@@ -812,6 +794,17 @@ function remove_connection_from_list(connection_name) {
         if (connection_list_name_from_and_to[i][0] == connection_name) {
             connection_list_name_from_and_to.splice(i, 1);
             break;
+        }
+    }
+}
+
+function remove_connection_to_and_from(tile_name) {
+    for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
+        if (connection_list_name_from_and_to[i][1] == "#" + tile_name
+            || connection_list_name_from_and_to[i][2] == "#" + tile_name) {
+            $(connection_list_name_from_and_to[i][1]).connections('remove');
+            connection_list_name_from_and_to.splice(i, 1);
+            i--;
         }
     }
 }
@@ -1155,8 +1148,8 @@ $(function() {
                     newElement.css({
                         position: 'absolute',
                         // the top and left corner of the element will be at the cursor position
-                        top: mouseY + ypos - newElement.outerHeight()/2,
-                        left: mouseX + xpos - newElement.outerWidth()/2
+                        top: mouseY + ypos + newElement.outerHeight()/2,
+                        left: mouseX + xpos + newElement.outerWidth()/2
                     });
                     newElement.draggable({
                         start: function(event, ui) {

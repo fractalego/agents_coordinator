@@ -220,6 +220,7 @@
       "-radius: 0;"
     ;
     (border_h <= 0 || border_w <= 0) &&
+
       (style += "border-" + v[1] + "-" + h[1] + "-radius: 0;");
     if (data.hidden) {
       style += "display: none;";

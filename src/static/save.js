@@ -28,14 +28,21 @@ function refactor_connections(pageContent) {
     }
 }
 
+
+function get_working_html_page() {
+    var pageContent = $('html').clone();
+    refactor_connections(pageContent);
+    pageContent.find('textarea').each(function() {
+        $(this).text($(this).val());
+    });
+    pageContent.find('.my-connection').remove();
+    return pageContent;
+}
+
+
 $(document).ready(function() {
     $('#save-button').click(function() {
-        var pageContent = $('html').clone(); // Clone the HTML content
-        refactor_connections(pageContent);
-        pageContent.find('textarea').each(function() {
-            $(this).text($(this).val()); // Update textareas with their current values
-        });
-        pageContent.find('.my-connection').remove();
+        var pageContent = get_working_html_page();
         var blob = new Blob([pageContent.html()], { type: 'text/html' });
 
         var link = document.createElement('a');
