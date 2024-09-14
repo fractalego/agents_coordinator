@@ -39,6 +39,16 @@ function get_working_html_page() {
     return pageContent;
 }
 
+function get_body_clone_string() {
+    var pageContent = $('body').clone();
+    refactor_connections(pageContent);
+    pageContent.find('textarea').each(function() {
+        $(this).text($(this).val());
+    });
+    pageContent.find('.my-connection').remove();
+    return pageContent.html();
+}
+
 
 $(document).ready(function() {
     $('#save-button').click(function() {
