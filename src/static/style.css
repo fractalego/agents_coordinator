@@ -14,6 +14,7 @@
     border-radius: 5px;
     overflow: hidden;
     position: absolute;
+    z-index: 2000;
 }
 .ui-selected {
     border-color: darkblue;
@@ -49,6 +50,7 @@
 
 .my-connection {
     border-radius: 0px;
+    z-index: 0;
 }
 
 .menu-item:hover {
