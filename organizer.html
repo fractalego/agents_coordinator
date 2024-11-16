@@ -18,6 +18,7 @@
     border-radius: 5px;
     overflow: hidden;
     position: absolute;
+    z-index: 2000;
 }
 .ui-selected {
     border-color: darkblue;
@@ -53,6 +54,7 @@
 
 .my-connection {
     border-radius: 0px;
+    z-index: 0;
 }
 
 .menu-item:hover {
@@ -323,7 +325,7 @@
       } else if (v[1] === "bottom" && h[1] === "left") {
         degrees = "135deg";
       }
-      data.css["border-image"] = `linear-gradient(${degrees}, white, darkblue) 1 round`;
+      data.css["border-image"] = `linear-gradient(${degrees}, white, black) 1 round`;
 
       var current_rect = connection.getBoundingClientRect();
       data.css.left = connection.offsetLeft + l - current_rect.left;
