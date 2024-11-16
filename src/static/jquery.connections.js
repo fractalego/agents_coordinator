@@ -239,7 +239,7 @@
       } else if (v[1] === "bottom" && h[1] === "left") {
         degrees = "135deg";
       }
-      data.css["border-image"] = `linear-gradient(${degrees}, white, black) 1 round`;
+      data.css["border-image"] = `linear-gradient(${degrees}, #eeeeee, black) 1 round`;
 
       var current_rect = connection.getBoundingClientRect();
       data.css.left = connection.offsetLeft + l - current_rect.left;
