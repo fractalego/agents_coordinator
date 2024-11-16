@@ -102,20 +102,22 @@ function create_new_tile(event, position, html_tile_creator, type) {
                     to: '#${new_container_name}',
                     'class': 'my-connection ' + connection_name,
                 });
-                connection_list_name_from_and_to.push([connection_name, current_selection, '#${new_container_name}']);
-                $('.' + connection_name).attr('tabindex', '-1');
-                $('.' + connection_name).on('keydown', function (event) {
-                    console.log('.' + connection_name);
-                    savePageState();
-                    $('.' + connection_name).connections('remove_connection');
-                    remove_connection_from_list(connection_name);
-                });
-                $('.' + connection_name).focus(function() {
-                    $('.' + connection_name).css({
-                        'border-image': 'none', // Remove gradient border
-                        'border-color': 'black', // Set solid black border                       
+                if (current_selection != ${new_container_name}) {
+                    connection_list_name_from_and_to.push([connection_name, current_selection, '#${new_container_name}']);
+                    $('.' + connection_name).attr('tabindex', '-1');
+                    $('.' + connection_name).on('keydown', function (event) {
+                        console.log('.' + connection_name);
+                        savePageState();
+                        $('.' + connection_name).connections('remove_connection');
+                        remove_connection_from_list(connection_name);
                     });
-                });
+                    $('.' + connection_name).focus(function() {
+                        $('.' + connection_name).css({
+                            'border-image': 'none', // Remove gradient border
+                            'border-color': 'black', // Set solid black border                       
+                        });
+                    });
+                }
                 current_selection = null;
             }
             current_selection = '#${new_container_name}';

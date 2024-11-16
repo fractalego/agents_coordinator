@@ -504,7 +504,6 @@ function create_new_tile(event, position, html_tile_creator, type) {
     jQuery('body').append(
         html_tile_creator(new_container_name, screenCenterX, screenCenterY)
     )
-    var connection_name = `${type}_connection-${new_container_name}`;
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.text = `
@@ -588,25 +587,28 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 };
             }
             console.log('#${new_container_name}');
-            if (cntrlIsPressed && current_selection != null) {                
+            if (cntrlIsPressed && current_selection != null) {
+                var connection_name = '${type}_connection-${new_container_name}' + Math.floor(Math.random() * 1000000);       
                 $(current_selection).connections({
                     to: '#${new_container_name}',
-                    'class': 'my-connection ${connection_name}'
+                    'class': 'my-connection ' + connection_name,
                 });
-                connection_list_name_from_and_to.push(['${connection_name}', current_selection, '#${new_container_name}']);
-                $('.${connection_name}').attr('tabindex', '-1');
-                $('.${connection_name}').on('keydown', function (event) {
-                    console.log('#${connection_name}');
-                    savePageState();
-                    $('.${connection_name}').connections('remove_connection');
-                    remove_connection_from_list('${connection_name}');
-                });
-                $('.${connection_name}').focus(function() {
-                    $('.${connection_name}').css({
-                        'border-image': 'none', // Remove gradient border
-                        'border-color': 'black', // Set solid black border                       
+                if (current_selection != ${new_container_name}) {
+                    connection_list_name_from_and_to.push([connection_name, current_selection, '#${new_container_name}']);
+                    $('.' + connection_name).attr('tabindex', '-1');
+                    $('.' + connection_name).on('keydown', function (event) {
+                        console.log('.' + connection_name);
+                        savePageState();
+                        $('.' + connection_name).connections('remove_connection');
+                        remove_connection_from_list(connection_name);
                     });
-                });
+                    $('.' + connection_name).focus(function() {
+                        $('.' + connection_name).css({
+                            'border-image': 'none', // Remove gradient border
+                            'border-color': 'black', // Set solid black border                       
+                        });
+                    });
+                }
                 current_selection = null;
             }
             current_selection = '#${new_container_name}';
@@ -615,6 +617,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
     `;
     document.head.appendChild(script);
 }
+
 
 </script>
     <script>
@@ -698,7 +701,7 @@ function refactor_connections(pageContent, append_to="head") {
                 });
                 $('.${connection_name}').attr('tabindex', '-1');
                 $('.${connection_name}').on('keydown', function (event) {
-                    $('${connection_to}').connections('remove');
+                    $('${connection_to}').connections('remove_connection');
                 });
             });
         `);
@@ -822,7 +825,6 @@ function remove_connection_from_list(connection_name) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
         if (connection_list_name_from_and_to[i][0] == connection_name) {
             connection_list_name_from_and_to.splice(i, 1);
-            break;
         }
     }
 }
@@ -831,7 +833,7 @@ function remove_connection_to_and_from(tile_name) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
         if (connection_list_name_from_and_to[i][1] == "#" + tile_name
             || connection_list_name_from_and_to[i][2] == "#" + tile_name) {
-            $(connection_list_name_from_and_to[i][1]).connections('remove');
+            $(connection_list_name_from_and_to[i][1]).connections('remove_connection');
             connection_list_name_from_and_to.splice(i, 1);
             i--;
         }
@@ -1230,7 +1232,7 @@ $(function() {
                         console.log(`#${new_id}`)
                         if (event.keyCode == 46) {
                             if (document.activeElement.tagName.toLowerCase() != "textarea") {
-                                $(`#${new_id}`).connections('remove');
+                                $(`#${new_id}`).connections('remove_connection');
                                 this.remove();
                             }
                         }
@@ -1261,7 +1263,7 @@ $(function() {
                             $(`.${connection_name}`).attr('tabindex', '-1');
                             $(`.${connection_name}`).on('keydown', function (event) {
                                 console.log(`#${connection_name}`);
-                                $(`.${connection_name}`).connections('remove');
+                                $(`.${connection_name}`).connections('remove_connection');
                                 remove_connection_from_list(`${connection_name}`);
                             });
                             current_selection = null;
