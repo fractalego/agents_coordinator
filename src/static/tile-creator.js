@@ -13,7 +13,6 @@ function create_new_tile(event, position, html_tile_creator, type) {
     jQuery('body').append(
         html_tile_creator(new_container_name, screenCenterX, screenCenterY)
     )
-    var connection_name = `${type}_connection-${new_container_name}`;
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.text = `
@@ -74,7 +73,7 @@ function create_new_tile(event, position, html_tile_creator, type) {
             if (event.keyCode == 46) {
                 if (document.activeElement.tagName.toLowerCase() != "textarea") {
                     remove_connection_to_and_from('${new_container_name}');
-                    $('#${new_container_name}').connections('remove');
+                    $('#${new_container_name}').connections('remove_connection');
                     this.remove();
                 }
             }
@@ -97,21 +96,22 @@ function create_new_tile(event, position, html_tile_creator, type) {
                 };
             }
             console.log('#${new_container_name}');
-            if (cntrlIsPressed && current_selection != null) {                
+            if (cntrlIsPressed && current_selection != null) {
+                var connection_name = '${type}_connection-${new_container_name}' + Math.floor(Math.random() * 1000000);       
                 $(current_selection).connections({
                     to: '#${new_container_name}',
-                    'class': 'my-connection ${connection_name}'
+                    'class': 'my-connection ' + connection_name,
                 });
-                connection_list_name_from_and_to.push(['${connection_name}', current_selection, '#${new_container_name}']);
-                $('.${connection_name}').attr('tabindex', '-1');
-                $('.${connection_name}').on('keydown', function (event) {
-                    console.log('#${connection_name}');
+                connection_list_name_from_and_to.push([connection_name, current_selection, '#${new_container_name}']);
+                $('.' + connection_name).attr('tabindex', '-1');
+                $('.' + connection_name).on('keydown', function (event) {
+                    console.log('.' + connection_name);
                     savePageState();
-                    $('.${connection_name}').connections('remove');
-                    remove_connection_from_list('${connection_name}');
+                    $('.' + connection_name).connections('remove_connection');
+                    remove_connection_from_list(connection_name);
                 });
-                $('.${connection_name}').focus(function() {
-                    $('.${connection_name}').css({
+                $('.' + connection_name).focus(function() {
+                    $('.' + connection_name).css({
                         'border-image': 'none', // Remove gradient border
                         'border-color': 'black', // Set solid black border                       
                     });
@@ -124,3 +124,4 @@ function create_new_tile(event, position, html_tile_creator, type) {
     `;
     document.head.appendChild(script);
 }
+

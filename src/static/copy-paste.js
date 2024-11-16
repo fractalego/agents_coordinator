@@ -89,7 +89,7 @@ $(function() {
                         console.log(`#${new_id}`)
                         if (event.keyCode == 46) {
                             if (document.activeElement.tagName.toLowerCase() != "textarea") {
-                                $(`#${new_id}`).connections('remove');
+                                $(`#${new_id}`).connections('remove_connection');
                                 this.remove();
                             }
                         }
@@ -120,7 +120,7 @@ $(function() {
                             $(`.${connection_name}`).attr('tabindex', '-1');
                             $(`.${connection_name}`).on('keydown', function (event) {
                                 console.log(`#${connection_name}`);
-                                $(`.${connection_name}`).connections('remove');
+                                $(`.${connection_name}`).connections('remove_connection');
                                 remove_connection_from_list(`${connection_name}`);
                             });
                             current_selection = null;

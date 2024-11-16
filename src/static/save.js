@@ -1,4 +1,4 @@
-function refactor_connections(pageContent) {
+function refactor_connections(pageContent, append_to="head") {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
         var connection_name = connection_list_name_from_and_to[i][0];
         var connection_from = connection_list_name_from_and_to[i][1];
@@ -14,17 +14,17 @@ function refactor_connections(pageContent) {
                 });
                 $('.${connection_name}').attr('tabindex', '-1');
                 $('.${connection_name}').on('keydown', function (event) {
-                    $('${connection_to}').connections('remove');
+                    $('${connection_to}').connections('remove_connection');
                 });
             });
         `);
-        pageContent.find('head').append(newScript);
+        pageContent.find(append_to).append(newScript);
         var latestConnections = $('<script>')
         .attr('type', 'text/javascript')
         .text(`
             connection_list_name_from_and_to = ${JSON.stringify(connection_list_name_from_and_to)};
         `);
-        pageContent.find('head').append(latestConnections);
+        pageContent.find(append_to).append(latestConnections);
     }
 }
 
@@ -41,7 +41,7 @@ function get_working_html_page() {
 
 function get_body_clone_string() {
     var pageContent = $('body').clone();
-    refactor_connections(pageContent);
+    refactor_connections(pageContent, "body");
     pageContent.find('textarea').each(function() {
         $(this).text($(this).val());
     });

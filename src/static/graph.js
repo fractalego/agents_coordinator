@@ -2,7 +2,6 @@ function remove_connection_from_list(connection_name) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
         if (connection_list_name_from_and_to[i][0] == connection_name) {
             connection_list_name_from_and_to.splice(i, 1);
-            break;
         }
     }
 }
@@ -11,7 +10,7 @@ function remove_connection_to_and_from(tile_name) {
     for (var i = 0; i < connection_list_name_from_and_to.length; i++) {
         if (connection_list_name_from_and_to[i][1] == "#" + tile_name
             || connection_list_name_from_and_to[i][2] == "#" + tile_name) {
-            $(connection_list_name_from_and_to[i][1]).connections('remove');
+            $(connection_list_name_from_and_to[i][1]).connections('remove_connection');
             connection_list_name_from_and_to.splice(i, 1);
             i--;
         }

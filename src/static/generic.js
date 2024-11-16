@@ -35,16 +35,16 @@ function savePageState() {
 }
 
 
-$(document).keydown(function (event) {
-    if (event.which == "90" && cntrlIsPressed) {
-        if (prior_pages.length > 0) {
-            var last_page = prior_pages.pop();
-            document.body.outerHTML = last_page;
-            executeScripts(prior_pages);
-            document.body.style="height: 10000px; width: 10000px;"
-        }
-    }
-});
+// $(document).keydown(function (event) {
+//     if (event.which == "90" && cntrlIsPressed) {
+//         if (prior_pages.length > 0) {
+//             var last_page = prior_pages.pop();
+//             document.body.outerHTML = last_page;
+//             executeScripts(prior_pages);
+//             document.body.style="height: 10000px; width: 10000px;"
+//         }
+//     }
+// });
 
 
 function executeScripts(prior_pages) {
