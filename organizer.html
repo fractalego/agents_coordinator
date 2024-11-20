@@ -387,7 +387,7 @@ var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
 var mousex = 0, mousey = 0;
 var prior_pages;
-
+var copiedElements = [];
 
 $(function() {
     // Make the entire body selectable
@@ -405,6 +405,8 @@ $(document).keydown(function (event) {
 $(document).keyup(function () {
     cntrlIsPressed = false;
 });
+
+
 
 function loadPageHistory() {
     prior_pages = JSON.parse(storedHistory);
@@ -1173,7 +1175,7 @@ $(function() {
             if (copiedElements.length > 0) {
                 copiedElements.forEach(function(el_x_y) {
                     var [el, xpos, ypos] = el_x_y;
-                    var newElement = el.clone().removeClass("ui-selected"); // Clone and remove ui-selected class
+                    var newElement = $(el).removeClass("ui-selected"); // Clone and remove ui-selected class
                     let random_string = Math.random().toString(36).substring(7);
                     newElement.attr('id', newElement.attr('id') + '-copy' + random_string);
                     let new_id = newElement.attr('id');
@@ -1282,7 +1284,6 @@ $(function() {
         }
     });
 });
-
 </script>
     <script>
 function create_dashboard_tile(container_name, x, y) {

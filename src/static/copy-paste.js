@@ -28,7 +28,7 @@ $(function() {
             if (copiedElements.length > 0) {
                 copiedElements.forEach(function(el_x_y) {
                     var [el, xpos, ypos] = el_x_y;
-                    var newElement = el.clone().removeClass("ui-selected"); // Clone and remove ui-selected class
+                    var newElement = $(el).removeClass("ui-selected"); // Clone and remove ui-selected class
                     let random_string = Math.random().toString(36).substring(7);
                     newElement.attr('id', newElement.attr('id') + '-copy' + random_string);
                     let new_id = newElement.attr('id');

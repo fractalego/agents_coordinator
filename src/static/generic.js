@@ -3,7 +3,7 @@ var cntrlIsPressed = false;
 var connection_list_name_from_and_to = [];
 var mousex = 0, mousey = 0;
 var prior_pages;
-
+var copiedElements = [];
 
 $(function() {
     // Make the entire body selectable
@@ -21,6 +21,8 @@ $(document).keydown(function (event) {
 $(document).keyup(function () {
     cntrlIsPressed = false;
 });
+
+
 
 function loadPageHistory() {
     prior_pages = JSON.parse(storedHistory);
